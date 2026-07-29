@@ -1,0 +1,74 @@
+[
+  {
+    "company": "Capgemini",
+    "domain": "capgemini.com",
+    "emails": {
+      "domain": [
+        "riya.b.mondal@capgemini.com",
+        "kona.venkatesh@capgemini.com",
+        "sajid.k.shaikh@capgemini.com",
+        "oindrila.roy@capgemini.com",
+        "santosh.ramaswamy@capgemini.com",
+        "parameshwari.parameshwari@capgemini.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Infosys",
+    "domain": "infosys.com",
+    "emails": {
+      "domain": [
+        "priyanka.malkani@infosys.com",
+        "wasim.shaikh03@infosys.com",
+        "jitendra.bhadouriya@infosys.com",
+        "bharathan.s01@infosys.com",
+        "chayan.nigam@infosys.com",
+        "aditya_thakurdesai@infosys.com",
+        "rushikesharjun.g@infosys.com",
+        "shinde.vijay@infosys.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Wipro",
+    "domain": "wipro.com",
+    "emails": {
+      "domain": [
+        "praity.choudhury@wipro.com",
+        "varun.singh4@wipro.com",
+        "rithik.jangid@wipro.com",
+        "manda.giri@wipro.com",
+        "harsha.manglani@wipro.com",
+        "sukalpa.dhar@wipro.com",
+        "partha.bharadwaj@wipro.com",
+        "purvi.jain1@wipro.com",
+        "badgeanushree.prashant@wipro.com",
+        "tulasi.chevuluri@wipro.com",
+        "ve40192575@wipro.com",
+        "shaeesta.shaikh@wipro.com",
+        "meghna.sharma2@wipro.com",
+        "soumini.roychowdhury@wipro.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "CashKaro",
+    "domain": "cashkaro.com",
+    "emails": {
+      "domain": [
+        "abdul.s@cashkaro.com",
+        "nikitajain@cashkaro.com"
+      ],
+      "other": [
+        "rishav@earnkaro.com"
+      ]
+    },
+    "pagesScraped": 1
+  }
+]

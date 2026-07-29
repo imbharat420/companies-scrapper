@@ -1,0 +1,546 @@
+[
+  {
+    "company": "ASMUTEK",
+    "domain": "asmutek.com",
+    "emails": {
+      "domain": [
+        "info@asmutek.com",
+        "careers@asmutek.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Hired",
+    "domain": "hired.com",
+    "emails": {
+      "domain": [],
+      "other": [
+        "chourehimanshu36@gmail.com"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "RytHirings",
+    "domain": "rythirings.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Wake Up Whistle",
+    "domain": "wakeupwhistle.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Zenithbyte",
+    "domain": "zenithbyte.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Flexiple",
+    "domain": "flexiple.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Jobs Ai",
+    "domain": "jobs.ai",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "internmo",
+    "domain": "internmo.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 10
+  },
+  {
+    "company": "Adobe",
+    "domain": "adobe.com",
+    "emails": {
+      "domain": [
+        "johnt@adobe.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "WebBoost Solutions by UM",
+    "domain": "webboostsolutions.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Dexter's Tech",
+    "domain": "dexterstech.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Web Nova Crew Technologies",
+    "domain": "webnovacrew.com",
+    "emails": {
+      "domain": [
+        "info@webnovacrew.com"
+      ],
+      "other": [
+        "sateesh8749@gmail.com"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "MediNex Workforce",
+    "domain": "medinexworkforce.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "ReraTracker",
+    "domain": "reratracker.com",
+    "emails": {
+      "domain": [
+        "rishabh.s@reratracker.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 10
+  },
+  {
+    "company": "DigitalXNode",
+    "domain": "digitalxnode.com",
+    "emails": {
+      "domain": [
+        "dp@digitalxnode.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Scoutit",
+    "domain": "scoutit.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "SWAKIO",
+    "domain": "swakio.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "DataLunix",
+    "domain": "datalunix.com",
+    "emails": {
+      "domain": [
+        "aboli@datalunix.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Deloitte",
+    "domain": "deloitte.com",
+    "emails": {
+      "domain": [
+        "snandha.ext@deloitte.com",
+        "shgupta@deloitte.com",
+        "intacyber@deloitte.com",
+        "akarsgupta@deloitte.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "EPAM Systems",
+    "domain": "epam.com",
+    "emails": {
+      "domain": [
+        "richa_sahu@epam.com",
+        "kshama_jain@epam.com",
+        "rajat_joshi@epam.com",
+        "gowri_gurusamy@epam.com",
+        "bharath_narla@epam.com",
+        "megha_bansal@epam.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Capgemini",
+    "domain": "capgemini.com",
+    "emails": {
+      "domain": [
+        "sajid.k.shaikh@capgemini.com",
+        "oindrila.roy@capgemini.com",
+        "pooja.t.sharma@capgemini.com",
+        "sk.saidul-islam@capgemini.com",
+        "neha.d.ghosh@capgemini.com",
+        "santosh.ramaswamy@capgemini.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 10
+  },
+  {
+    "company": "Qualcomm",
+    "domain": "qualcomm.com",
+    "emails": {
+      "domain": [
+        "disability-accomodations@qualcomm.com",
+        "employmentfraud@qualcomm.com",
+        "marketinginternship@qualcomm.com",
+        "academic@qualcomm.com"
+      ],
+      "other": [
+        "ksengtho@qti.qualcomm.com",
+        "talent@careersqualcomm.com"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "avua",
+    "domain": "avua.com",
+    "emails": {
+      "domain": [
+        "seema.kant@avua.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "ZeroNotice",
+    "domain": "zeronotice.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Flipkart",
+    "domain": "flipkart.com",
+    "emails": {
+      "domain": [
+        "maji.soumitra@flipkart.com",
+        "arshad.ayub@flipkart.com",
+        "vineetthakur1.vc@flipkart.com",
+        "ashutosh.a2@flipkart.com",
+        "samakshi.garg@flipkart.com",
+        "tanmay.mishra@flipkart.com",
+        "grievance.officer@flipkart.com",
+        "cs@flipkart.com",
+        "abhinav.gupta6@flipkart.com",
+        "pushpender.sharma@flipkart.com",
+        "anil.kumar30@flipkart.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Infoplus Technologies UK Limited",
+    "domain": "infoplussolutions.co.uk",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "SNB Innovations",
+    "domain": "snbinnovations.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Tesco Technology",
+    "domain": "tesco.com",
+    "emails": {
+      "domain": [
+        "shwetha.r1@tesco.com",
+        "candidatecare@tesco.com",
+        "robert.hefferon@tesco.com",
+        "pavan.kumara@tesco.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Microsoft",
+    "domain": "microsoft.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Light & Wonder",
+    "domain": "lnw.com",
+    "emails": {
+      "domain": [
+        "panand@lnw.com",
+        "sghodke@lnw.com",
+        "jyadavmn@lnw.com",
+        "dkumard@lnw.com",
+        "jkarande@lnw.com",
+        "rkumargc@lnw.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Google",
+    "domain": "google.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 8
+  },
+  {
+    "company": "HARP",
+    "domain": "harp.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Future Transformation",
+    "domain": "futuretransformation.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Anginat Learning",
+    "domain": "anginat.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Carelon Global Solutions India",
+    "domain": "carelon.com",
+    "emails": {
+      "domain": [
+        "studioindia@carelon.com",
+        "arunraj.nagaraj@carelon.com",
+        "aryan.verma@carelon.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Duruper",
+    "domain": "duruper.com",
+    "emails": {
+      "domain": [
+        "muskan.singh@duruper.com",
+        "bony.anthony@duruper.com",
+        "ritto.mani@duruper.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Payoneer",
+    "domain": "payoneer.com",
+    "emails": {
+      "domain": [
+        "meisharga@payoneer.com",
+        "shanehe@payoneer.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "KAAPRO",
+    "domain": "kaapro.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "GoodSpace AI",
+    "domain": "goodspace.ai",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Swiggy",
+    "domain": "swiggy.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Policybazaar.com",
+    "domain": "policybazaar.com",
+    "emails": {
+      "domain": [
+        "anmolchawla@policybazaar.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Clearwater Analytics",
+    "domain": "clearwateranalytics.com",
+    "emails": {
+      "domain": [
+        "arnabpaul@clearwateranalytics.com",
+        "vashu.sharma@clearwateranalytics.com",
+        "haskenazi@clearwateranalytics.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Crossing Hurdles",
+    "domain": "crossinghurdles.com",
+    "emails": {
+      "domain": [
+        "hr@crossinghurdles.com",
+        "saurav@crossinghurdles.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "CareerXperts Consulting",
+    "domain": "careerxperts.com",
+    "emails": {
+      "domain": [
+        "amit.n@careerxperts.com",
+        "rajeshwari.vh@careerxperts.com",
+        "tanuja.k@careerxperts.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "SentinelOne",
+    "domain": "sentinelone.com",
+    "emails": {
+      "domain": [
+        "vaclav.kotyk@sentinelone.com",
+        "sventures@sentinelone.com",
+        "garima.more@sentinelone.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Apple",
+    "domain": "apple.com",
+    "emails": {
+      "domain": [
+        "jade_s@apple.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 10
+  },
+  {
+    "company": "DIGIIQ IT SOLUTION PRIVATE LIMITED",
+    "domain": "digiiq.com",
+    "emails": {
+      "domain": [
+        "vijay.gugnani@digiiq.com",
+        "hr@digiiq.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "HRM Counsel",
+    "domain": "hrmcounsel.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "DigitalOcean",
+    "domain": "digitalocean.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 10
+  }
+]

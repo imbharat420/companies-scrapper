@@ -1,0 +1,70 @@
+[
+  {
+    "company": "ASMUTEK",
+    "domain": "asmutek.com",
+    "emails": {
+      "domain": [
+        "info@asmutek.com",
+        "careers@asmutek.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Hired",
+    "domain": "hired.com",
+    "emails": {
+      "domain": [],
+      "other": [
+        "chourehimanshu36@gmail.com"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "RytHirings",
+    "domain": "rythirings.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Wake Up Whistle",
+    "domain": "wakeupwhistle.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Zenithbyte",
+    "domain": "zenithbyte.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Flexiple",
+    "domain": "flexiple.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Jobs Ai",
+    "domain": "jobs.ai",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  }
+]

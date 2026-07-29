@@ -1,0 +1,833 @@
+[
+  {
+    "company": "Cognizant",
+    "domain": "cognizant.com",
+    "emails": {
+      "domain": [
+        "akshay.pithore@cognizant.com",
+        "ramkumar.m4@cognizant.com",
+        "somak.ghosh@cognizant.com",
+        "swetaprakash.sahoo@cognizant.com",
+        "sriharsha.nagabhyru@cognizant.com",
+        "praveenkumar.sudhakaran@cognizant.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "LTIMindtree",
+    "domain": "ltimindtree.com",
+    "emails": {
+      "domain": [
+        "mandar.ludbe@ltimindtree.com",
+        "nilabja.choudhury@ltimindtree.com",
+        "gurrala.reddy@ltimindtree.com",
+        "ankur1.nema@ltimindtree.com",
+        "aakanksha.kalkundrikar2@ltimindtree.com",
+        "pradeep.t2@ltimindtree.com",
+        "karthik.sivakumar@ltimindtree.com",
+        "govind.rajan@ltimindtree.com",
+        "putta.madhavi@ltimindtree.com",
+        "neha.pandey@ltimindtree.com",
+        "id-meghana.br2@ltimindtree.com",
+        "bolloju.manasa@ltimindtree.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Tata Consultancy Services",
+    "domain": "tcs.com",
+    "emails": {
+      "domain": [
+        "k.kundan15@tcs.com",
+        "gopinath.j3@tcs.com",
+        "csr.communications@tcs.com",
+        "lakshmi.james@tcs.com",
+        "mithun.maharana@tcs.com",
+        "vijayalakshmi3.b@tcs.com",
+        "sumag.r@tcs.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "DXC Technology",
+    "domain": "dxc.com",
+    "emails": {
+      "domain": [
+        "jaya.priya@dxc.com",
+        "p.mohanty@dxc.com",
+        "anilkumar.kola@dxc.com",
+        "mamilla.kishore@dxc.com",
+        "partha-sarathi-m.banerjee@dxc.com",
+        "m.venkataramanan@dxc.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "HCLTech",
+    "domain": "hcltech.com",
+    "emails": {
+      "domain": [
+        "anjali-m@hcltech.com",
+        "vikas.kapoor2@hcltech.com",
+        "sudharsan.sivas@hcltech.com",
+        "joyrenitha.merlinr@hcltech.com",
+        "ritikasr@hcltech.com",
+        "bhagyashree-lokhande@hcltech.com",
+        "taniya-gupta@hcltech.com",
+        "sreemoyee.ghosh@hcltech.com",
+        "nishantsr@hcltech.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "HashedIn by Deloitte",
+    "domain": "hashedin.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Hexaware Technologies",
+    "domain": "hexaware.com",
+    "emails": {
+      "domain": [
+        "raviraghulv@hexaware.com",
+        "ramanagolaa@hexaware.com",
+        "nishac3@hexaware.com",
+        "bhavanar@hexaware.com",
+        "bhawnas1@hexaware.com",
+        "sushmitas4@hexaware.com",
+        "heeralals1@hexaware.com",
+        "sagark24@hexaware.com",
+        "sowmyaj@hexaware.com",
+        "amitp1@hexaware.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Revature",
+    "domain": "revature.com",
+    "emails": {
+      "domain": [
+        "marketing@revature.com",
+        "tag@revature.com",
+        "yuvaraja.karunanithi.c@revature.com",
+        "udhaya.kumar@revature.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "IBM",
+    "domain": "ibm.com",
+    "emails": {
+      "domain": [
+        "diksha.das1@ibm.com",
+        "sanjeet.nag@ibm.com",
+        "kuheli.das@ibm.com",
+        "akshay.ck@ibm.com",
+        "elashree.s.r@ibm.com",
+        "sunil.yadav12@ibm.com",
+        "nandu.dinesh@ibm.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Nagarro",
+    "domain": "nagarro.com",
+    "emails": {
+      "domain": [
+        "manjeet.singh02@nagarro.com",
+        "sweety01@nagarro.com",
+        "nancy01@nagarro.com",
+        "ankita.kumari01@nagarro.com",
+        "m.reddy@nagarro.com",
+        "bhavya.lakhera@nagarro.com",
+        "shubhank.singh@nagarro.com",
+        "pallavi.tandan@nagarro.com",
+        "bhushan.lele@nagarro.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Virtusa",
+    "domain": "virtusa.com",
+    "emails": {
+      "domain": [
+        "swapnily@virtusa.com",
+        "augustinej@virtusa.com",
+        "sdevaki@virtusa.com",
+        "shumailaf@virtusa.com",
+        "sivaprasathk@virtusa.com",
+        "mounisreem@virtusa.com",
+        "sdarshini@virtusa.com",
+        "shabirahamed@virtusa.com",
+        "gokulavashanp@virtusa.com",
+        "mohamedabubakkars@virtusa.com",
+        "rakeshkumarr@virtusa.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Zoho",
+    "domain": "zohocorp.com",
+    "emails": {
+      "domain": [
+        "blessy.hannah@zohocorp.com",
+        "support-as@zohocorp.com",
+        "recruitment-abuse@zohocorp.com",
+        "india-enterprise@zohocorp.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "CGI",
+    "domain": "cgi.com",
+    "emails": {
+      "domain": [
+        "ganesh.dudhade@cgi.com",
+        "priyanka.jain@cgi.com",
+        "vidyasagar.madumadukala@cgi.com",
+        "dheeraj.kolani@cgi.com",
+        "vaishnavi.belgumpe@cgi.com",
+        "narsing.chedudupu@cgi.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Finastra",
+    "domain": "finastra.com",
+    "emails": {
+      "domain": [
+        "ganesh.patil@finastra.com",
+        "milind.chandgadkar@finastra.com",
+        "anandkumar.khivensra@finastra.com",
+        "denisseestefania.delatorreguzman@finastra.com",
+        "mina.tan@finastra.com",
+        "steve.megson@finastra.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "FIS",
+    "domain": "fisglobal.com",
+    "emails": {
+      "domain": [
+        "michelle.moore2@fisglobal.com",
+        "esther.karkada@fisglobal.com",
+        "lauren.grant@fisglobal.com",
+        "emile.meouchi@fisglobal.com"
+      ],
+      "other": [
+        "michelle.moore2@worldpay.com"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Fiserv",
+    "domain": "fiserv.com",
+    "emails": {
+      "domain": [
+        "shane.smith@fiserv.com",
+        "arinjay.malik@fiserv.com",
+        "alice.burns@fiserv.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "IQVIA",
+    "domain": "iqvia.com",
+    "emails": {
+      "domain": [
+        "sherry.thammappakm@iqvia.com",
+        "navitha.gouli@iqvia.com",
+        "subhro.banerjee@iqvia.com",
+        "muhammed.nazeemkk@iqvia.com",
+        "jinto.jacobc@iqvia.com",
+        "priyanka.tyagi2@iqvia.com",
+        "vindu.jayan@iqvia.com",
+        "vaishnavinandkishor.kamble@iqvia.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Jio",
+    "domain": "jio.com",
+    "emails": {
+      "domain": [
+        "support@jio.com",
+        "1909@jio.com",
+        "appellate.mum@jio.com",
+        "appellate.ap@jio.com",
+        "nodalofficer.ap@jio.com",
+        "jiofibercare@jio.com",
+        "grievance.officer@jio.com",
+        "jiofibrecare@jio.com",
+        "businesscare@jio.com"
+      ],
+      "other": [
+        "ss.kumar1987@yahoo.com",
+        "supremecourt@nic.in",
+        "dgp@tn.gov.in",
+        "sronanguneri@tnreginet.net",
+        "hobac1del@cbi.gov.in",
+        "complaintcell-ncw@nic.in",
+        "hobeoviibbsr@cbi.gov.in"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "MAQ Software",
+    "domain": "maqsoftware.com",
+    "emails": {
+      "domain": [
+        "haric@maqsoftware.com",
+        "jobs@maqsoftware.com",
+        "rupals@maqsoftware.com",
+        "adiladnan@maqsoftware.com",
+        "rahulsi@maqsoftware.com",
+        "aarushig@maqsoftware.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Optum",
+    "domain": "optum.com",
+    "emails": {
+      "domain": [
+        "govind_singh@optum.com",
+        "parminder_mehar@optum.com",
+        "bianca.sills@optum.com",
+        "kayla_maldonado@optum.com",
+        "elizabeth_salas1@optum.com",
+        "japjit_ratra@optum.com",
+        "sudeshna.nayak@optum.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Publicis Sapient",
+    "domain": "publicissapient.com",
+    "emails": {
+      "domain": [
+        "saloni.mahajan@publicissapient.com",
+        "harshith.jm@publicissapient.com",
+        "saraswati.kumari@publicissapient.com",
+        "manish.verma2@publicissapient.com",
+        "radhika.jha@publicissapient.com",
+        "avi.vyas@publicissapient.com",
+        "poushali.nandi@publicissapient.com",
+        "ramya.n@publicissapient.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "GeekyAnts",
+    "domain": "geekyants.com",
+    "emails": {
+      "domain": [
+        "jyothi.sm@geekyants.com",
+        "ashrita.pradhan@geekyants.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Accolite Digital",
+    "domain": "accolite.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Airtel",
+    "domain": "airtel.com",
+    "emails": {
+      "domain": [
+        "a_bhavika.singh@airtel.com",
+        "a_faaiza.fatima@airtel.com",
+        "a_swati.dhasmana@airtel.com",
+        "a_liza.chugh@airtel.com",
+        "a_anjali.devi@airtel.com",
+        "ayush.pardeshi@airtel.com",
+        "a_tripti.boshat@airtel.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Electronic Arts",
+    "domain": "ea.com",
+    "emails": {
+      "domain": [
+        "dkorotkov@ea.com",
+        "analarajah@ea.com"
+      ],
+      "other": [
+        "olunlade.executivesearch@gmail.com",
+        "enquiries@krystal-ea.com",
+        "info@allen-ea.com"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Gartner",
+    "domain": "gartner.com",
+    "emails": {
+      "domain": [
+        "jayveer.nanda@gartner.com",
+        "nitesh.singh@gartner.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "HARMAN",
+    "domain": "harman.com",
+    "emails": {
+      "domain": [
+        "sindhu.k@harman.com",
+        "monish.r@harman.com",
+        "jayashree.s@harman.com",
+        "nandini.anandasekaran@harman.com",
+        "gerardo.aguayo@harman.com",
+        "andreina.aguilera@harman.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Yellow.ai",
+    "domain": "yellow.ai",
+    "emails": {
+      "domain": [],
+      "other": [
+        "ravina.rathod@hireginie.com"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Siemens",
+    "domain": "siemens.com",
+    "emails": {
+      "domain": [
+        "pradnya.patil@siemens.com",
+        "akashyadav@siemens.com",
+        "goel.gaurav@siemens.com",
+        "shatabdi.roy@siemens.com",
+        "sampath.pothuraju.ext@siemens.com",
+        "kaya.tarun-teja@siemens.com",
+        "ramesh.panchigunta.ext@siemens.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Samsung",
+    "domain": "samsung.com",
+    "emails": {
+      "domain": [
+        "k.swetha@samsung.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "VMware",
+    "domain": "vmware.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Adobe",
+    "domain": "adobe.com",
+    "emails": {
+      "domain": [
+        "johnt@adobe.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Amazon",
+    "domain": "amazon.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Cadence",
+    "domain": "cadence.com",
+    "emails": {
+      "domain": [
+        "ashish3@cadence.com",
+        "shikhasi@cadence.com",
+        "furkank@cadence.com",
+        "dsg_na_ae_careers@cadence.com",
+        "raghuv@cadence.com",
+        "cdn_dip_hiring@cadence.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "CleverTap",
+    "domain": "clevertap.com",
+    "emails": {
+      "domain": [
+        "jay.shah@clevertap.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Cisco",
+    "domain": "cisco.com",
+    "emails": {
+      "domain": [
+        "cgoksal@cisco.com",
+        "npabbi@cisco.com",
+        "bbhar@cisco.com",
+        "anuvishw@cisco.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Dunzo",
+    "domain": "dunzo.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "FamPay",
+    "domain": "fampay.in",
+    "emails": {
+      "domain": [
+        "people@fampay.in",
+        "cs@fampay.in"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Flipkart",
+    "domain": "flipkart.com",
+    "emails": {
+      "domain": [
+        "shoubhik.saha@flipkart.com",
+        "arshad.ayub@flipkart.com",
+        "samansthitasen.vc@flipkart.com",
+        "pushpender.sharma@flipkart.com",
+        "sandeepkumar55.vc@flipkart.com",
+        "nitish.dangwal@flipkart.com",
+        "samakshi.garg@flipkart.com",
+        "tanmay.mishra@flipkart.com",
+        "mahibhadauria.vc@flipkart.com",
+        "nutanj.vc@flipkart.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Google",
+    "domain": "google.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "HackerEarth",
+    "domain": "hackerearth.com",
+    "emails": {
+      "domain": [
+        "smruti@hackerearth.com",
+        "tarunmallappa@hackerearth.com"
+      ],
+      "other": [
+        "azhar109649@gmail.com",
+        "linkexpert28@gmail.com"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Morgan Stanley",
+    "domain": "morganstanley.com",
+    "emails": {
+      "domain": [
+        "dossantosgroup@morganstanley.com",
+        "andrew.percoco@morganstanley.com",
+        "shisham.kaya@morganstanley.com",
+        "ajay.simon@morganstanley.com",
+        "himanshi.singh1@morganstanley.com",
+        "dolly.karia@morganstanley.com",
+        "greta.berry@morganstanley.com",
+        "the128group@morganstanley.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "EY",
+    "domain": "ey.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "MyGate",
+    "domain": "mygate.com",
+    "emails": {
+      "domain": [
+        "tateam@mygate.com",
+        "rohit@mygate.com",
+        "ankita.s@mygate.com",
+        "abhishekkumar@mygate.com",
+        "tanay.sharma@mygate.com",
+        "sai.kumar@mygate.com",
+        "amey.vaidya@mygate.com",
+        "arjun.ps@mygate.com",
+        "priyanka.garga@mygate.com"
+      ],
+      "other": [
+        "tateam@mygate.in",
+        "m.pranesh@mygate.in",
+        "adhish.dusad@mygate.in",
+        "karan.arora@mygate.in",
+        "imtiaj.alam@mygate.in"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "McAfee",
+    "domain": "mcafee.com",
+    "emails": {
+      "domain": [
+        "sushmitha_b@mcafee.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Oracle",
+    "domain": "oracle.com",
+    "emails": {
+      "domain": [
+        "rinisha.bhaskar@oracle.com",
+        "aakrati.gupta@oracle.com",
+        "raj.jha@oracle.com",
+        "swapna.upparapati@oracle.com",
+        "manjula.m.m@oracle.com",
+        "narayan.shetti@oracle.com",
+        "pavan.nagireddi@oracle.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Microsoft",
+    "domain": "microsoft.com",
+    "emails": {
+      "domain": [],
+      "other": [
+        "noreply@rnicrosoft.com"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "PhonePe",
+    "domain": "phonepe.com",
+    "emails": {
+      "domain": [
+        "shahid.zeya@phonepe.com",
+        "akash.deep2@phonepe.com",
+        "prashant.wadghane@phonepe.com",
+        "rishika.rathi@phonepe.com",
+        "anshika.gupta@phonepe.com",
+        "lakshay.1@phonepe.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "PwC",
+    "domain": "pwc.com",
+    "emails": {
+      "domain": [
+        "a.sanskriti.tpr@pwc.com",
+        "pallavi.mishra@pwc.com",
+        "in_recruitment_tax@pwc.com",
+        "amarjit.roy@pwc.com",
+        "mangala.hanamshetty.tpr@pwc.com",
+        "ankur.n.soni@pwc.com",
+        "meda.lokesh.tpr@pwc.com",
+        "nidhi.soni@pwc.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Rakuten",
+    "domain": "rakuten.com",
+    "emails": {
+      "domain": [
+        "srashti.shukla@rakuten.com",
+        "hoangson.nguyen@rakuten.com",
+        "honganh.nguyen@rakuten.com",
+        "yuliia.bilozer@rakuten.com",
+        "elizabeth.painkin@rakuten.com",
+        "colinian.rowat@rakuten.com",
+        "sharad.tiltiya@rakuten.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Razorpay",
+    "domain": "razorpay.com",
+    "emails": {
+      "domain": [
+        "akhilesh.padhy@razorpay.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "SAP",
+    "domain": "sap.com",
+    "emails": {
+      "domain": [
+        "rgm_engage@sap.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Media.net",
+    "domain": "media.net",
+    "emails": {
+      "domain": [],
+      "other": [
+        "brajesh@delbangindia.com"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Twilio",
+    "domain": "twilio.com",
+    "emails": {
+      "domain": [],
+      "other": [
+        "iva.trofilov@warmymm.com"
+      ]
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "IKEA",
+    "domain": "ikea.com",
+    "emails": {
+      "domain": [],
+      "other": []
+    },
+    "pagesScraped": 1
+  },
+  {
+    "company": "Accenture",
+    "domain": "accenture.com",
+    "emails": {
+      "domain": [
+        "neha.c.rathore@accenture.com",
+        "pratiksha.shirke@accenture.com",
+        "srushti.a.gaikwad@accenture.com",
+        "ramvilas.r.varma@accenture.com",
+        "neha.a.kouser@accenture.com",
+        "sagar.ritu@accenture.com",
+        "akanksha.cy.singh@accenture.com",
+        "rect.helpdesk@accenture.com",
+        "candidate.queries@accenture.com"
+      ],
+      "other": []
+    },
+    "pagesScraped": 1
+  }
+]
