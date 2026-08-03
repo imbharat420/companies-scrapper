@@ -44,9 +44,11 @@ services:
       start_period: 40s
 
     # --- Resources -------------------------------------------------------------
-    # 2g was too tight for a 10-tab Chrome; OOM-killed renderers surface as
+    # 2g was too tight for a multi-tab Chrome; OOM-killed renderers surface as
     # misleading "memory pressure" nav timeouts rather than a clean error.
-    mem_limit: 4g
+    # Budget ~250MB per parallel worker on top of ~1g of browser baseline, so 6g
+    # comfortably covers the default CONCURRENCY=4 and headroom to raise it.
+    mem_limit: 6g
     cpus: "4.0"
     ulimits:
       nofile:
