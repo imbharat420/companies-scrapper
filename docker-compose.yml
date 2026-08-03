@@ -1,0 +1,81 @@
+## for scrape email from the websites using pinchtab docker file and run the script which use this docker instance
+services:
+  pinchtab:
+    image: pinchtab/pinchtab:latest
+    container_name: pinchtab_scraper
+
+    # Chrome spawns a deep process tree (zygote -> renderers -> GPU). Without an
+    # init, killed renderers become zombies and eventually exhaust the PID table.
+    init: true
+
+    ports:
+      - "127.0.0.1:9867:9867"
+
+    volumes:
+      # /data must be writable: managed config, profiles and session state live here.
+      - pinchtab-data:/data
+      # Documented custom-config pattern: mount read-only OUTSIDE /data and point
+      # PINCHTAB_CONFIG at it. Do NOT overlay /data/.config/pinchtab/config.json --
+      # that path is owned by the entrypoint, which rewrites it on first boot.
+      - ./config.json:/config/config.json:ro
+
+    environment:
+      - PINCHTAB_CONFIG=/config/config.json
+      - PINCHTAB_TOKEN=your_super_secret_osint_token
+
+    restart: unless-stopped
+    stop_grace_period: 30s
+
+    # Chrome uses /dev/shm heavily for renderer surfaces; too small => tab crashes.
+    shm_size: "2gb"
+
+    # /health returns 200 as soon as the process is up, but Chrome is only usable
+    # once defaultInstance.status == "running". Gate dependents on this, and let
+    # start_period absorb the ~15-20s lazy Chrome cold start (upstream #622).
+    # /health is authenticated (401 without a token), so the probe must send it.
+    # $$ escapes to a literal $ so the shell expands it inside the container.
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "wget -qO- --header=\"Authorization: Bearer $$PINCHTAB_TOKEN\" http://localhost:9867/health | grep -q '\"status\":\"running\"'"
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 40s
+
+    # --- Resources -------------------------------------------------------------
+    # 2g was too tight for a 10-tab Chrome; OOM-killed renderers surface as
+    # misleading "memory pressure" nav timeouts rather than a clean error.
+    mem_limit: 4g
+    cpus: "4.0"
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+
+    # --- Hardening -------------------------------------------------------------
+    # The image already runs non-root with --no-sandbox handled at runtime, so
+    # dropping caps costs nothing. Never put --no-sandbox in browser.extraFlags.
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+    # Supported by the image as a compensating control for the disabled Chrome
+    # sandbox. If Chrome behaves oddly (blank renders, profile write errors),
+    # this is the FIRST thing to flip to false when isolating the cause.
+    read_only: true
+    tmpfs:
+      # noexec is deliberately absent: some Chrome helper paths execute from /tmp
+      # and fail opaquely under noexec. 1g because Chrome scratches heavily here.
+      - /tmp:size=1g,nosuid,nodev
+      - /run:size=64m,noexec,nosuid,nodev
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  pinchtab-data:
