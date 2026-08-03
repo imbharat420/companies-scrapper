@@ -1,0 +1,167 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pinchtab/pinchtab/main/schema/config.json",
+  "configVersion": "0.8.0",
+  "server": {
+    "port": "9867",
+    "bind": "0.0.0.0",
+    "token": "your_super_secret_osint_token",
+    "stateDir": "/data/.pinchtab"
+  },
+  "browser": {
+    "version": "144.0.7559.133",
+    "binary": "",
+    "extraFlags": "",
+    "extensionPaths": [
+      "/data/.pinchtab/extensions"
+    ]
+  },
+  "browsers": {
+    "default": "chrome"
+  },
+  "instanceDefaults": {
+    "mode": "headless",
+    "noRestore": true,
+    "timezone": "Asia/Kolkata",
+    "blockImages": false,
+    "blockMedia": true,
+    "blockAds": true,
+    "maxTabs": 24,
+    "maxParallelTabs": 8,
+    "userAgent": "",
+    "noAnimations": false,
+    "humanize": true,
+    "stealthLevel": "full",
+    "tabEvictionPolicy": "close_lru"
+  },
+  "security": {
+    "allowEvaluate": true,
+    "allowMacro": false,
+    "allowScreencast": false,
+    "allowDownload": false,
+    "allowCookies": true,
+    "allowNetworkIntercept": true,
+    "allowFileScheme": false,
+    "allowedDomains": [
+      "*"
+    ],
+    "downloadAllowedDomains": [],
+    "downloadMaxBytes": 20971520,
+    "allowUpload": false,
+    "allowClipboard": false,
+    "allowStateExport": false,
+    "stateEncryptionKey": null,
+    "enableActionGuards": false,
+    "uploadMaxRequestBytes": 10485760,
+    "uploadMaxFiles": 8,
+    "uploadMaxFileBytes": 5242880,
+    "uploadMaxTotalBytes": 10485760,
+    "maxRedirects": -1,
+    "trustedProxyCIDRs": [],
+    "trustedResolveCIDRs": [],
+    "trustLoopbackProxy": false,
+    "attach": {
+      "enabled": false,
+      "allowHosts": [
+        "127.0.0.1",
+        "localhost",
+        "::1"
+      ],
+      "allowSchemes": [
+        "ws",
+        "wss",
+        "http",
+        "https"
+      ],
+      "forwardProxyAuth": false
+    },
+    "idpi": {
+      "enabled": false,
+      "strictMode": false,
+      "scanContent": false,
+      "wrapContent": false,
+      "customPatterns": [],
+      "scanTimeoutSec": 5,
+      "shieldThreshold": 100
+    }
+  },
+  "profiles": {
+    "baseDir": "/data/.pinchtab/profiles",
+    "defaultProfile": "default"
+  },
+  "multiInstance": {
+    "strategy": "always-on",
+    "allocationPolicy": "fcfs",
+    "instancePortStart": 9868,
+    "instancePortEnd": 9968,
+    "restart": {
+      "maxRestarts": 20,
+      "initBackoffSec": 2,
+      "maxBackoffSec": 60,
+      "stableAfterSec": 300
+    }
+  },
+  "timeouts": {
+    "actionSec": 60,
+    "navigateSec": 110,
+    "shutdownSec": 20,
+    "waitNavMs": 1500
+  },
+  "scheduler": {
+    "enabled": null,
+    "strategy": "",
+    "maxQueueSize": null,
+    "maxPerAgent": null,
+    "maxInflight": null,
+    "maxPerAgentInflight": null,
+    "resultTTLSec": null,
+    "workerCount": null
+  },
+  "observability": {
+    "activity": {
+      "enabled": true,
+      "sessionIdleSec": 1800,
+      "retentionDays": 30,
+      "stateDir": "",
+      "events": {
+        "dashboard": false,
+        "server": false,
+        "bridge": false,
+        "orchestrator": false,
+        "scheduler": false,
+        "mcp": false,
+        "other": false
+      }
+    }
+  },
+  "sessions": {
+    "dashboard": {
+      "persist": true,
+      "idleTimeoutSec": 604800,
+      "maxLifetimeSec": 604800,
+      "elevationWindowSec": 900,
+      "persistElevationAcrossRestart": false,
+      "requireElevation": false
+    }
+  },
+  "autoSolver": {
+    "enabled": true,
+    "autoTrigger": true,
+    "triggerOnNavigate": true,
+    "triggerOnAction": true,
+    "maxAttempts": 8,
+    "solverTimeoutSec": 45,
+    "retryBaseDelayMs": 500,
+    "retryMaxDelayMs": 10000,
+    "solvers": [
+      "cloudflare",
+      "semantic"
+    ],
+    "llmFallback": false,
+    "external": {},
+    "credentials": {
+      "login": {},
+      "signup": {},
+      "form": {}
+    }
+  }
+}
