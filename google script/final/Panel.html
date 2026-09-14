@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<style>
+  :root{--bg:#f6f7f9;--card:#fff;--line:#e3e6ea;--ink:#1f2933;--muted:#6b7280;--accent:#1a73e8;--ok:#188038;--warn:#b26a00;--bad:#c5221f;--chip:#eef2ff}
+  *{box-sizing:border-box} body{margin:0;font:13px/1.45 Arial,Helvetica,sans-serif;color:var(--ink);background:var(--bg)}
+  header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+  header h1{font-size:15px;margin:0 12px 0 0}
+  .tabs{display:flex;gap:4px} .tab{padding:6px 12px;border-radius:16px;cursor:pointer;color:var(--muted)} .tab.on{background:var(--chip);color:var(--accent);font-weight:bold}
+  .spacer{flex:1} .pill{font-size:11px;padding:2px 8px;border-radius:10px;background:#eee} .pill.ok{background:#e6f4ea;color:var(--ok)} .pill.bad{background:#fce8e6;color:var(--bad)} .pill.warn{background:#fef7e0;color:var(--warn)}
+  main{padding:14px 16px 24px} section{display:none} section.on{display:block}
+  .grid{display:grid;gap:12px} .g4{grid-template-columns:repeat(4,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px} .card h3{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+  .kpi{font-size:26px;font-weight:bold} .sub{color:var(--muted);font-size:12px}
+  table{width:100%;border-collapse:collapse;font-size:12px} th{text-align:left;color:var(--muted);font-weight:normal;border-bottom:1px solid var(--line);padding:4px 6px} td{padding:5px 6px;border-bottom:1px solid #f0f2f4;vertical-align:top}
+  tr:last-child td{border-bottom:0} .num{text-align:right}
+  button{font:inherit;border:1px solid var(--line);background:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;color:var(--ink)} button:hover{background:#f3f4f6}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff} button.primary:hover{background:#1765cc} button.danger{background:var(--bad);border-color:var(--bad);color:#fff}
+  button.sm{padding:3px 8px;font-size:11px} button:disabled{opacity:.5;cursor:default}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap} .field{display:flex;flex-direction:column;gap:3px} label{font-size:11px;color:var(--muted)}
+  input[type=number],input[type=text],input[type=datetime-local],select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:#fff;min-width:90px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap} .chip{padding:5px 10px;border-radius:14px;border:1px solid var(--line);cursor:pointer;background:#fff;font-size:12px} .chip.on{background:var(--chip);border-color:var(--accent);color:var(--accent)}
+  .bar{height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-top:6px} .bar i{display:block;height:100%;background:var(--accent)}
+  .result{margin-top:10px;padding:10px 12px;border-radius:8px;background:#e8f0fe;color:#174ea6;white-space:pre-wrap} .result.err{background:#fce8e6;color:var(--bad)}
+  .muted{color:var(--muted)} .tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:11px;background:#eee}
+  .tag.POSITIVE{background:#e6f4ea;color:var(--ok)} .tag.NEGATIVE{background:#fce8e6;color:var(--bad)} .tag.NEUTRAL{background:#e8eaed} .tag.AUTO_REPLY,.tag.BOUNCE{background:#fef7e0;color:var(--warn)}
+  .snip{color:#444;font-style:italic} a{color:var(--accent);text-decoration:none}
+  #busy{position:fixed;inset:0;background:rgba(255,255,255,.6);display:none;align-items:center;justify-content:center;font-weight:bold;z-index:9}
+  .log td{font-family:Menlo,Consolas,monospace;font-size:11px} .lvl-WARN{color:var(--warn)} .lvl-ERROR{color:var(--bad)}
+  .note{font-size:11px;color:var(--muted);margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Mail Engine</h1>
+  <div class="tabs">
+    <div class="tab" data-tab="dashboard">Dashboard</div>
+    <div class="tab" data-tab="schedule">Schedule</div>
+    <div class="tab" data-tab="send">Send now</div>
+    <div class="tab" data-tab="replies">Replies & follow-ups</div>
+  </div>
+  <div class="spacer"></div>
+  <span id="hdr-state" class="pill">…</span>
+  <button class="sm" onclick="refreshAll()">↻ Refresh</button>
+</header>
+<main>
+
+<!-- ================= DASHBOARD ================= -->
+<section id="dashboard">
+  <div class="grid g4">
+    <div class="card"><h3>Scheduler</h3><div id="d-sched" class="kpi">–</div><div class="sub" id="d-sched-sub"></div>
+      <div class="row" style="margin-top:8px"><button class="sm" onclick="ctl('install')">Install trigger</button><button class="sm" onclick="ctl('tick')">Run tick</button><button class="sm" id="d-pausebtn" onclick="togglePause()">Pause</button></div></div>
+    <div class="card"><h3>Due right now</h3><div id="d-due" class="kpi">–</div><div class="sub" id="d-window"></div></div>
+    <div class="card"><h3>Sent · last hour / 24 h</h3><div class="kpi"><span id="d-hour">–</span> <span class="sub">/ <span id="d-hourmax"></span></span></div><div class="bar"><i id="d-hourbar"></i></div><div class="sub" style="margin-top:6px"><span id="d-day"></span> / <span id="d-daymax"></span> today · Gmail quota left <b id="d-quota"></b></div></div>
+    <div class="card"><h3>Awaiting reply</h3><div id="d-await" class="kpi">–</div><div class="sub" id="d-await-sub"></div></div>
+  </div>
+  <div class="grid g3" style="margin-top:12px">
+    <div class="card"><h3>By status</h3><table id="d-status"></table></div>
+    <div class="card"><h3>By group</h3><table id="d-group"></table></div>
+    <div class="card"><h3>Replies by sentiment</h3><table id="d-sent"></table><h3 style="margin-top:12px">Sequence</h3><table id="d-seq"></table></div>
+  </div>
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card"><h3>Next first emails</h3><table id="d-next"></table></div>
+    <div class="card"><h3>Next follow-ups</h3><table id="d-nextfu"></table></div>
+  </div>
+  <div class="card" style="margin-top:12px"><h3>Recent log <span class="muted" style="text-transform:none">(newest first · full history in the Logs sheet)</span></h3><table id="d-log" class="log"></table></div>
+  <div class="note" id="d-foot"></div>
+</section>
+
+<!-- ================= SCHEDULE ================= -->
+<section id="schedule">
+  <div class="grid g2">
+    <div class="card">
+      <h3>1 · Who</h3>
+      <div class="chips" id="s-scope">
+        <div class="chip on" data-v="unscheduled">All unscheduled rows</div>
+        <div class="chip" data-v="group">A group</div>
+        <div class="chip" data-v="selected">Selected rows</div>
+        <div class="chip" data-v="all">All rows (with overwrite)</div>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <div class="field" id="s-groupwrap" style="display:none"><label>Group</label><select id="s-group"></select></div>
+        <div class="field"><label>&nbsp;</label><span class="muted" id="s-scopeinfo"></span></div>
+      </div>
+      <h3 style="margin-top:14px">2 · When to start</h3>
+      <div class="chips" id="s-start">
+        <div class="chip on" data-v="now">Now</div>
+        <div class="chip" data-v="in_1h">In 1 hour</div>
+        <div class="chip" data-v="in_3h">In 3 hours</div>
+        <div class="chip" data-v="tomorrow_same">Tomorrow, same time</div>
+        <div class="chip" data-v="tomorrow_window">Tomorrow at window start</div>
+        <div class="chip" data-v="next_monday">Next Monday, window start</div>
+        <div class="chip" data-v="next_week_same">Next week, same time</div>
+        <div class="chip" data-v="custom">Custom…</div>
+      </div>
+      <div class="row" style="margin-top:8px" id="s-customwrap" hidden>
+        <div class="field"><label>Custom start (sheet timezone <span id="s-tz"></span>)</label><input type="datetime-local" id="s-custom"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>3 · Spacing</h3>
+      <div class="row">
+        <div class="field"><label>Gap between emails (min)</label><input type="number" id="s-gap" min="1" value="3"></div>
+        <div class="field"><label>Emails per batch</label><input type="number" id="s-batch" min="0" value="10"></div>
+        <div class="field"><label>Pause between batches (min)</label><input type="number" id="s-pause" min="0" value="30"></div>
+        <div class="field"><label>Max per day</label><input type="number" id="s-cap" min="0" value="90"></div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <label><input type="checkbox" id="s-window" checked> Only inside the send window (skips nights/weekends)</label>
+        <label><input type="checkbox" id="s-overwrite"> Overwrite existing Scheduled Dates</label>
+      </div>
+      <div class="note">Batch of 0 = no batches, just the gap. Times get ± jitter from Config so they don't look robotic.</div>
+      <div class="row" style="margin-top:14px">
+        <button onclick="schedule(true)">Preview</button>
+        <button class="primary" onclick="schedule(false)">Apply schedule</button>
+      </div>
+      <div id="s-result"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>Follow-up sequence <span class="muted" style="text-transform:none">(delay counts from the previous send · sent in the same thread · stops on any reply)</span></h3>
+    <table id="s-seq"></table>
+    <div class="row" style="margin-top:8px"><button class="sm" onclick="addStep()">+ Add step</button><button class="sm primary" onclick="saveSeq()">Save sequence</button><span class="muted" id="s-seqmsg"></span></div>
+  </div>
+</section>
+
+<!-- ================= SEND NOW ================= -->
+<section id="send">
+  <div class="card">
+    <h3>Force send — ignores Scheduled Date</h3>
+    <div class="chips" id="f-scope">
+      <div class="chip" data-v="selected">Selected rows</div>
+      <div class="chip" data-v="group">A group</div>
+      <div class="chip on" data-v="unscheduled">All unscheduled rows</div>
+      <div class="chip" data-v="all">Everything still pending</div>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <div class="field" id="f-groupwrap" style="display:none"><label>Group</label><select id="f-group"></select></div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <label><input type="checkbox" id="f-window" checked> Ignore the send window</label>
+      <label><input type="checkbox" id="f-fu" checked> Also send due-or-not follow-ups for rows already SENT</label>
+    </div>
+    <div class="note">Still respects: validation, suppression list, MAX_PER_HOUR / MAX_PER_DAY, Gmail quota, PAUSED. Rows that don't fit in one run are queued as "due now" for the next tick.</div>
+    <div class="row" style="margin-top:14px"><button class="danger" onclick="forceSend()">⚡ Send now</button><span class="muted" id="f-info"></span></div>
+    <div id="f-result"></div>
+  </div>
+</section>
+
+<!-- ================= REPLIES ================= -->
+<section id="replies">
+  <div class="card">
+    <h3>Got a reply <span class="muted" style="text-transform:none">— respond from the Responses sheet templates (draft opens in Gmail for review, or send directly)</span></h3>
+    <table id="r-replied"></table>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>No reply yet <span class="muted" style="text-transform:none">— let the sequence run, or draft the next step yourself in the thread</span></h3>
+    <table id="r-await"></table>
+  </div>
+  <div class="note" id="r-note"></div>
+</section>
+
+</main>
+<div id="busy">Working…</div>
+
+<script>
+const INITIAL_TAB = '<?= tab ?>';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function call(fn, ...args){ return new Promise((res, rej) => google.script.run.withSuccessHandler(res).withFailureHandler(e => rej(e))[fn](...args)); }
+function busy(on){ $('#busy').style.display = on ? 'flex' : 'none'; }
+function result(el, text, err){ const d = $(el); d.innerHTML = `<div class="result ${err?'err':''}">${esc(text)}</div>`; }
+
+/* tabs */
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => showTab(t.dataset.tab));
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.tab === name));
+  document.querySelectorAll('section').forEach(s => s.classList.toggle('on', s.id === name));
+  if (name === 'dashboard') loadDashboard(); if (name === 'schedule' || name === 'send') loadGroups(); if (name === 'replies') loadReplies();
+}
+function chips(sel, onChange){ const box = $(sel); box.querySelectorAll('.chip').forEach(c => c.onclick = () => { box.querySelectorAll('.chip').forEach(x => x.classList.remove('on')); c.classList.add('on'); onChange && onChange(c.dataset.v); }); }
+const chipVal = sel => $(sel + ' .chip.on')?.dataset.v;
+
+/* ---------- dashboard ---------- */
+let DASH = null;
+async function loadDashboard(){
+  try {
+    busy(true); const d = DASH = await call('api_dashboard'); busy(false);
+    $('#hdr-state').textContent = d.paused ? 'PAUSED' : (d.triggers ? 'RUNNING' : 'NO TRIGGER'); $('#hdr-state').className = 'pill ' + (d.paused ? 'warn' : d.triggers ? 'ok' : 'bad');
+    $('#d-sched').textContent = d.triggers ? (d.paused ? 'Paused' : 'Active') : 'Off';
+    $('#d-sched-sub').textContent = `trigger${d.triggers!==1?'s':''}: ${d.triggers} · last tick ${d.lastTick}` + (d.lastTickStats ? ' · ' + d.lastTickStats : '');
+    $('#d-pausebtn').textContent = d.paused ? 'Resume' : 'Pause';
+    $('#d-due').textContent = d.dueNow; $('#d-window').textContent = `window ${d.windowOpen ? 'OPEN' : 'CLOSED'} · ${d.window} (${d.tz})`;
+    $('#d-hour').textContent = d.sentHour; $('#d-hourmax').textContent = d.maxHour; $('#d-hourbar').style.width = Math.min(100, d.maxHour ? d.sentHour/d.maxHour*100 : 0) + '%';
+    $('#d-day').textContent = d.sentDay; $('#d-daymax').textContent = d.maxDay; $('#d-quota').textContent = d.quota;
+    $('#d-await').textContent = d.awaiting; $('#d-await-sub').textContent = `${d.rows} rows total · ${d.suppression} suppressed · Gmail API ${d.gmailApi ? 'on (in-thread follow-ups)' : 'off'}`;
+    $('#d-status').innerHTML = Object.keys(d.byStatus).sort().map(k => `<tr><td>${esc(k)}</td><td class="num">${d.byStatus[k]}</td></tr>`).join('') || '<tr><td class="muted">no rows</td></tr>';
+    $('#d-group').innerHTML = '<tr><th>Group</th><th class="num">Total</th><th class="num">Queued</th><th class="num">Sent</th><th class="num">Replied</th></tr>' +
+      Object.keys(d.byGroup).sort().map(g => { const x = d.byGroup[g]; return `<tr><td>${esc(g)}</td><td class="num">${x.total}</td><td class="num">${x.scheduled}</td><td class="num">${x.sent}</td><td class="num">${x.replied}</td></tr>`; }).join('');
+    $('#d-sent').innerHTML = Object.keys(d.bySentiment).length ? Object.keys(d.bySentiment).map(k => `<tr><td><span class="tag ${esc(k)}">${esc(k)}</span></td><td class="num">${d.bySentiment[k]}</td></tr>`).join('') : '<tr><td class="muted">no replies yet</td></tr>';
+    $('#d-seq').innerHTML = d.sequence.map(s => `<tr><td>Step ${s.step}</td><td>${esc(s.subject)} ${s.draftOk ? '' : '<span class="pill bad">draft missing</span>'}</td><td class="num">${s.step>1 ? '+' + s.delay + 'h' : ''}</td><td class="num">${s.sentCount} reached</td></tr>`).join('');
+    $('#d-next').innerHTML = d.nextSends.length ? d.nextSends.map(x => `<tr><td>${x.at}</td><td>${esc(x.to)}</td><td class="muted">${esc(x.group)} · row ${x.row}</td></tr>`).join('') : '<tr><td class="muted">nothing scheduled — use the Schedule tab</td></tr>';
+    $('#d-nextfu').innerHTML = d.nextFollowUps.length ? d.nextFollowUps.map(x => `<tr><td>${x.at}</td><td>${esc(x.to)}</td><td class="muted">step ${x.step} · row ${x.row}</td></tr>`).join('') : '<tr><td class="muted">none pending</td></tr>';
+    $('#d-log').innerHTML = d.logs.map(l => `<tr class="lvl-${l.level}"><td>${l.ts}</td><td>${l.level}</td><td>${l.row||''}</td><td>${esc(l.to)}</td><td>${esc(l.event)}</td><td class="muted">${esc(l.details)}</td></tr>`).join('') || '<tr><td class="muted">no log yet</td></tr>';
+    $('#d-foot').textContent = `Signed in as ${d.me} · server time ${d.now} · responses: ` + (d.responses.map(r => r.key + (r.draftOk ? '' : ' (draft missing)')).join(', ') || 'none configured');
+  } catch (e) { busy(false); result('#d-foot', 'Dashboard error: ' + (e.message || e), true); }
+}
+async function ctl(action){ try { busy(true); const m = await call('api_control', action); busy(false); loadDashboard(); alert(m); } catch (e) { busy(false); alert(e.message || e); } }
+function togglePause(){ ctl(DASH && DASH.paused ? 'resume' : 'pause'); }
+
+/* ---------- schedule ---------- */
+let G = null;
+async function loadGroups(){
+  try {
+    busy(true); G = await call('api_groups'); busy(false);
+    const opts = Object.keys(G.groups).sort().map(g => `<option value="${esc(g)}">${esc(g)} — ${G.groups[g].unscheduled} unscheduled / ${G.groups[g].total}</option>`).join('');
+    $('#s-group').innerHTML = opts; $('#f-group').innerHTML = opts;
+    $('#s-gap').value = G.defaults.gapMin; $('#s-batch').value = G.defaults.batchSize; $('#s-pause').value = G.defaults.batchPauseMin; $('#s-cap').value = G.defaults.perDayCap;
+    $('#s-tz').textContent = G.tz; $('#s-scopeinfo').textContent = `${G.selected} row(s) currently selected in the sheet`; $('#f-info').textContent = `${G.selected} row(s) selected`;
+    renderSeq(G.sequence);
+  } catch (e) { busy(false); result('#s-result', e.message || e, true); }
+}
+chips('#s-scope', v => { $('#s-groupwrap').style.display = v === 'group' ? '' : 'none'; $('#s-overwrite').checked = v === 'all'; });
+chips('#s-start', v => { $('#s-customwrap').hidden = v !== 'custom'; });
+chips('#f-scope', v => { $('#f-groupwrap').style.display = v === 'group' ? '' : 'none'; });
+function scopeOf(prefix){ const t = chipVal('#' + prefix + '-scope'); return { type: t, group: t === 'group' ? $('#' + prefix + '-group').value : '' }; }
+async function schedule(dry){
+  const payload = {
+    scope: scopeOf('s'),
+    start: { preset: chipVal('#s-start'), value: $('#s-custom').value.replace('T', ' ') },
+    opts: { gapMin: +$('#s-gap').value, batchSize: +$('#s-batch').value, batchPauseMin: +$('#s-pause').value, perDayCap: +$('#s-cap').value, respectWindow: $('#s-window').checked, overwrite: $('#s-overwrite').checked, dryRun: !!dry }
+  };
+  if (payload.start.preset === 'custom' && !payload.start.value) return result('#s-result', 'Pick a custom start time.', true);
+  if (!dry && !confirm(`Apply schedule to ${payload.scope.type === 'group' ? 'group "' + payload.scope.group + '"' : payload.scope.type + ' rows'}?`)) return;
+  try {
+    busy(true); const r = await call('api_schedule', payload); busy(false);
+    result('#s-result', `${dry ? 'PREVIEW — nothing written' : 'APPLIED'}\n${r.count} row(s) scheduled (${r.skipped} skipped: already scheduled/sent/terminal) out of ${r.candidates} in scope\nStart: ${r.start}\nFirst: ${r.first}\nLast:  ${r.last}\nPer day: ${r.days.join(' · ')}`);
+    if (!dry) loadGroups();
+  } catch (e) { busy(false); result('#s-result', e.message || e, true); }
+}
+function renderSeq(steps){
+  $('#s-seq').innerHTML = '<tr><th>Step</th><th>Gmail Draft subject (exact)</th><th>Delay days</th><th>Delay hours</th><th>Active</th><th>Notes</th><th></th></tr>' +
+    steps.map((s, i) => `<tr data-i="${i}"><td>${i+1}</td><td><input type="text" class="q-sub" style="width:100%" value="${esc(s.subject)}"></td>
+      <td><input type="number" class="q-days" min="0" value="${s.days}" ${i===0?'disabled':''}></td><td><input type="number" class="q-hours" min="0" value="${s.hours}" ${i===0?'disabled':''}></td>
+      <td><input type="checkbox" class="q-act" ${s.active?'checked':''}></td><td><input type="text" class="q-notes" style="width:100%" value="${esc(s.notes)}"></td>
+      <td>${i>0?`<button class="sm" onclick="delStep(${i})">✕</button>`:''}</td></tr>`).join('');
+}
+function readSeq(){ return [...document.querySelectorAll('#s-seq tr[data-i]')].map(tr => ({ subject: tr.querySelector('.q-sub').value, days: +tr.querySelector('.q-days').value||0, hours: +tr.querySelector('.q-hours').value||0, active: tr.querySelector('.q-act').checked, notes: tr.querySelector('.q-notes').value })); }
+function addStep(){ const s = readSeq(); s.push({ subject: 'Follow-up ' + s.length, days: 3, hours: 0, active: true, notes: '' }); renderSeq(s); }
+function delStep(i){ const s = readSeq(); s.splice(i, 1); renderSeq(s); }
+async function saveSeq(){ try { busy(true); const n = await call('api_saveSequence', readSeq()); busy(false); $('#s-seqmsg').textContent = `Saved ${n} step(s). Make sure a Gmail Draft exists for each subject.`; } catch (e) { busy(false); $('#s-seqmsg').textContent = e.message || e; } }
+
+/* ---------- send now ---------- */
+async function forceSend(){
+  const scope = scopeOf('f');
+  if (!confirm(`Send NOW to ${scope.type === 'group' ? 'group "' + scope.group + '"' : scope.type + ' rows'}, ignoring Scheduled Date? This cannot be undone.`)) return;
+  try {
+    busy(true); const r = await call('api_forceSend', { scope, opts: { ignoreWindow: $('#f-window').checked, includeFollowUps: $('#f-fu').checked } }); busy(false);
+    result('#f-result', `Candidates: ${r.candidates}\nSent: ${r.sent} first emails, ${r.followUps} follow-ups\nQueued for next tick: ${r.queued}${r.blocked ? ' (' + r.blocked + ')' : ''}\nSkipped: ${r.skipped} · Errors: ${r.errors} (see Error column / Logs)`);
+  } catch (e) { busy(false); result('#f-result', e.message || e, true); }
+}
+
+/* ---------- replies ---------- */
+let R = null;
+async function loadReplies(){
+  try {
+    busy(true); R = await call('api_replies'); busy(false);
+    const respOpts = row => R.responses.map(t => `<option value="${esc(t.key)}" ${t.sentiment===row.sentiment?'selected':''}>${esc(t.key)}</option>`).join('');
+    $('#r-replied').innerHTML = '<tr><th>Row</th><th>Who</th><th>Sentiment</th><th>Reply</th><th>Respond</th></tr>' + (R.replied.map(x => `<tr>
+        <td>${x.row}<br><span class="muted">step ${x.step}</span></td>
+        <td><b>${esc(x.name||x.to)}</b><br><span class="muted">${esc(x.company)} · ${esc(x.to)}</span><br>${x.threadUrl?`<a href="${x.threadUrl}" target="_blank">open thread ↗</a>`:''}</td>
+        <td><span class="tag ${esc(x.sentiment)}">${esc(x.sentiment||x.replyStatus)}</span><br><span class="muted">${x.replyAt}</span><br><span class="muted">${esc(x.status)}</span></td>
+        <td class="snip">${esc(x.snippet) || '<span class="muted">—</span>'}${x.response?`<br><span class="tag">✓ ${esc(x.response)}</span>`:''}</td>
+        <td>${R.responses.length ? `<select id="rs-${x.row}">${respOpts(x)}</select><br><button class="sm" onclick="respond(${x.row},false)">Draft in Gmail</button> <button class="sm primary" onclick="respond(${x.row},true)">Send</button>` : '<span class="muted">Fill the Responses sheet</span>'}</td>
+      </tr>`).join('') || '<tr><td class="muted">no replies yet</td></tr>');
+    $('#r-await').innerHTML = '<tr><th>Row</th><th>Who</th><th>Progress</th><th>Next automatic step</th><th>Actions</th></tr>' + (R.awaiting.map(x => `<tr>
+        <td>${x.row}</td>
+        <td><b>${esc(x.name||x.to)}</b><br><span class="muted">${esc(x.company)} · ${esc(x.to)}</span><br>${x.threadUrl?`<a href="${x.threadUrl}" target="_blank">open thread ↗</a>`:''}</td>
+        <td>step ${x.step} sent ${x.sentAt}<br><span class="muted">${x.daysSince!=null?x.daysSince+' day(s) ago':''} · ${esc(x.status)}</span>${x.response?`<br><span class="tag">${esc(x.response)}</span>`:''}</td>
+        <td>${x.status==='SENT' && x.nextAt ? 'step ' + x.nextStep + ' at ' + x.nextAt : x.status==='MANUAL' ? '<span class="muted">manual — no auto follow-up</span>' : '<span class="muted">sequence finished</span>'}</td>
+        <td>${x.nextStep?`<button class="sm" onclick="draftFu(${x.row})">Draft step ${x.nextStep} in thread</button><br>`:''}${x.status==='SENT'?`<button class="sm" onclick="setStatus(${x.row},'MANUAL')">Stop auto follow-ups</button>`:x.status==='MANUAL'?`<button class="sm" onclick="setStatus(${x.row},'SENT')">Resume automatic</button>`:''}</td>
+      </tr>`).join('') || '<tr><td class="muted">nobody is waiting</td></tr>');
+    $('#r-note').textContent = R.gmailApi ? 'Drafts and sends go into the original thread (Gmail API on).' : 'Enable Services ▸ Gmail API in Apps Script to draft/send inside the original thread; currently new-thread fallback.';
+  } catch (e) { busy(false); result('#r-note', e.message || e, true); }
+}
+async function respond(row, sendNow){
+  const key = $('#rs-' + row).value;
+  if (sendNow && !confirm(`Send "${key}" to row ${row} now?`)) return;
+  try { busy(true); const n = await call('api_respond', row, key, sendNow); busy(false); alert(n); loadReplies(); } catch (e) { busy(false); alert(e.message || e); }
+}
+async function draftFu(row){ try { busy(true); const n = await call('api_draftFollowUp', row); busy(false); alert(n + '\nOpen Gmail ▸ Drafts to edit and send. Row is now MANUAL.'); loadReplies(); } catch (e) { busy(false); alert(e.message || e); } }
+async function setStatus(row, st){ try { busy(true); await call('api_setStatus', row, st); busy(false); loadReplies(); } catch (e) { busy(false); alert(e.message || e); } }
+
+function refreshAll(){ const t = document.querySelector('.tab.on')?.dataset.tab || 'dashboard'; showTab(t); }
+showTab(['dashboard','schedule','send','replies'].includes(INITIAL_TAB) ? INITIAL_TAB : 'dashboard');
+</script>
+</body>
+</html>

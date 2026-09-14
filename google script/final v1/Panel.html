@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f4f6f9;--panel:#fff;--line:#e5e8ee;--ink:#161b22;--muted:#6b7684;--accent:#2563eb;--accent-2:#1d4ed8;--ok:#15803d;--warn:#b45309;--bad:#b91c1c;--soft:#eef3ff;--nav:#0f172a;--nav-ink:#cbd5e1;--r:12px;--shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.1)}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font:13.5px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);display:flex}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+nav{width:216px;flex:0 0 216px;background:var(--nav);color:var(--nav-ink);display:flex;flex-direction:column;padding:14px 10px;gap:2px}
+nav .brand{display:flex;align-items:center;gap:10px;padding:8px 10px 18px;color:#fff;font-weight:700;font-size:15px}
+nav .brand i{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#60a5fa,#2563eb);display:inline-block}
+nav button{all:unset;display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;color:var(--nav-ink);font-size:13.5px;transition:background .15s}
+nav button:hover{background:rgba(255,255,255,.06)}nav button.on{background:rgba(96,165,250,.18);color:#fff;font-weight:600}
+nav button .ic{width:18px;text-align:center;opacity:.9}nav .grow{flex:1}
+nav .foot{font-size:11px;opacity:.6;padding:8px 12px;line-height:1.4;white-space:pre-line;word-break:break-all}
+main{flex:1;min-width:0;display:flex;flex-direction:column;height:100vh}
+.topbar{display:flex;align-items:center;gap:10px;padding:12px 22px;background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.topbar h1{font-size:17px;margin:0;font-weight:700}.topbar .grow{flex:1}
+.content{padding:20px 22px 40px;overflow:auto;flex:1}
+.page{display:none;animation:fade .2s}.page.on{display:block}@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px}
+.card h3{margin:0 0 10px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card h3 .grow{flex:1}.grid{display:grid;gap:14px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+@media(max-width:1100px){.g4,.g5{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr 1fr}}@media(max-width:760px){.g2,.g3,.g4,.g5{grid-template-columns:1fr}nav{display:none}}
+.mt{margin-top:14px}.kpi{font-size:28px;font-weight:700;line-height:1.1}.kpi.bad{color:var(--bad)}.sub{color:var(--muted);font-size:12px;margin-top:4px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;background:#eef0f4;color:#374151}
+.pill.ok{background:#dcfce7;color:var(--ok)}.pill.bad{background:#fee2e2;color:var(--bad)}.pill.warn{background:#fef3c7;color:var(--warn)}.pill.info{background:var(--soft);color:var(--accent)}
+.pill i{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:#eef0f4;color:#374151;white-space:nowrap}
+.st-NEW,.st-{background:#f1f5f9;color:#475569}.st-SCHEDULED{background:#e0f2fe;color:#0369a1}.st-SENDING{background:#fef9c3;color:#a16207}.st-SENT{background:#dbeafe;color:#1e40af}.st-COMPLETED{background:#e2e8f0;color:#334155}
+.st-REPLIED{background:#ede9fe;color:#6d28d9}.st-INTERESTED{background:#dcfce7;color:#15803d}.st-NOT_INTERESTED,.st-UNSUBSCRIBED{background:#fee2e2;color:#b91c1c}.st-BOUNCED,.st-INVALID,.st-ERROR{background:#fee2e2;color:#991b1b}.st-PAUSE,.st-SKIP,.st-MANUAL{background:#fef3c7;color:#92400e}
+.sn-POSITIVE{background:#dcfce7;color:#15803d}.sn-NEGATIVE{background:#fee2e2;color:#b91c1c}.sn-NEUTRAL{background:#e2e8f0;color:#334155}.sn-AUTO_REPLY,.sn-BOUNCE,.sn-{background:#fef3c7;color:#92400e}
+button,.btn{font:inherit;font-size:13px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:7px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .12s;white-space:nowrap}
+button:hover{background:#f8fafc;border-color:#cbd5e1}button:disabled{opacity:.45;cursor:not-allowed}
+.btn-p{background:var(--accent);border-color:var(--accent);color:#fff}.btn-p:hover{background:var(--accent-2)}.btn-d{background:var(--bad);border-color:var(--bad);color:#fff}.btn-d:hover{background:#991b1b}
+.btn-g{background:transparent;border-color:transparent}.btn-g:hover{background:#f1f5f9}.sm{padding:4px 9px;font-size:12px;border-radius:6px}.xs{padding:2px 7px;font-size:11px;border-radius:5px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row.end{justify-content:flex-end}.grow{flex:1}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}.lbl{font-size:11.5px;color:var(--muted);font-weight:600}
+input,select,textarea{font:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);min-width:0}
+input:focus,select:focus,textarea:focus{outline:2px solid #bfdbfe;border-color:var(--accent)}textarea{resize:vertical;min-height:80px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px}
+input[type=checkbox]{width:15px;height:15px;padding:0}.help{font-size:11.5px;color:var(--muted)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{padding:6px 12px;border:1px solid var(--line);border-radius:999px;cursor:pointer;background:#fff;font-size:12.5px;transition:all .12s;user-select:none}.chip:hover{border-color:#94a3b8}.chip.on{background:var(--soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+.switch{position:relative;width:38px;height:22px;display:inline-block;flex:0 0 38px}.switch input{opacity:0;width:0;height:0;position:absolute}.switch span{position:absolute;inset:0;background:#cbd5e1;border-radius:999px;transition:.15s;cursor:pointer}.switch span:before{content:"";position:absolute;width:18px;height:18px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.15s;box-shadow:0 1px 2px rgba(0,0,0,.2)}.switch input:checked+span{background:var(--accent)}.switch input:checked+span:before{transform:translateX(16px)}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px}th{text-align:left;font-weight:600;color:var(--muted);font-size:11.5px;padding:8px 10px;border-bottom:1px solid var(--line);background:#fafbfc;position:sticky;top:0;white-space:nowrap;z-index:1}
+td{padding:8px 10px;border-bottom:1px solid #f0f2f5;vertical-align:top}tr:hover td{background:#fafcff}.num{text-align:right}.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px}
+.tbl-wrap{overflow:auto;max-height:62vh;border:1px solid var(--line);border-radius:10px}
+.bar{height:6px;background:#eef0f4;border-radius:999px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--accent);transition:width .4s}
+.empty{padding:26px;text-align:center;color:var(--muted)}
+.result{margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--soft);color:#1e3a8a;white-space:pre-wrap;font-size:12.5px;border:1px solid #dbeafe}.result.err{background:#fee2e2;color:var(--bad);border-color:#fecaca}
+.snip{color:#374151;font-style:italic;font-size:12px}.muted{color:var(--muted)}.small{font-size:12px}.b{font-weight:600}
+#toasts{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:50}.toast{background:#111827;color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:fade .2s;max-width:420px;white-space:pre-wrap}.toast.ok{background:#14532d}.toast.err{background:#7f1d1d}
+#modal{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;z-index:40;padding:20px}#modal .box{background:#fff;border-radius:14px;width:min(780px,100%);max-height:92vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.35);animation:fade .15s}
+#modal .hd{display:flex;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font-weight:700;font-size:15px}#modal .bd{padding:16px 18px;overflow:auto}#modal .ft{padding:12px 18px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+#busy{position:fixed;inset:0;background:rgba(255,255,255,.55);display:none;align-items:center;justify-content:center;z-index:60}#busy div{background:#fff;padding:14px 20px;border-radius:12px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;font-weight:600}
+.spin{width:16px;height:16px;border:2px solid #cbd5e1;border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.skel{height:14px;background:linear-gradient(90deg,#eef0f4,#f8fafc,#eef0f4);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:6px;margin:6px 0}@keyframes sh{to{background-position:-200% 0}}
+.bulk{position:sticky;bottom:0;background:#0f172a;color:#fff;border-radius:12px;padding:10px 14px;display:none;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px;box-shadow:0 8px 30px rgba(0,0,0,.35)}.bulk button{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff}.bulk button:hover{background:rgba(255,255,255,.16)}
+.menu{position:relative}.menu .dd{position:absolute;right:0;top:100%;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.15);display:none;flex-direction:column;min-width:200px;z-index:8;padding:4px}.menu.open .dd{display:flex}.menu .dd button,.menu .dd a{border:0;border-radius:6px;justify-content:flex-start;padding:7px 10px}
+.log-WARN td{background:#fffbeb}.log-ERROR td{background:#fef2f2}.log-DEBUG td{color:#64748b}
+.pager{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin-top:10px;font-size:12px}
+.day-chk label{display:inline-flex;align-items:center;gap:4px;margin-right:8px;font-size:12px}.varchip{cursor:copy}
+</style>
+</head>
+<body>
+<nav>
+  <div class="brand"><i></i>Mail Engine</div>
+  <button data-page="dashboard" class="on"><span class="ic">▦</span>Dashboard</button>
+  <button data-page="recipients"><span class="ic">☰</span>Recipients</button>
+  <button data-page="schedule"><span class="ic">◷</span>Schedule &amp; send</button>
+  <button data-page="templates"><span class="ic">✎</span>Sequence &amp; templates</button>
+  <button data-page="replies"><span class="ic">✉</span>Replies</button>
+  <button data-page="settings"><span class="ic">⚙</span>Settings</button>
+  <button data-page="logs"><span class="ic">≣</span>Logs</button>
+  <div class="grow"></div>
+  <div class="foot" id="foot">…</div>
+</nav>
+<main>
+  <div class="topbar">
+    <h1 id="title">Dashboard</h1>
+    <span id="state" class="pill"><i></i>…</span>
+    <div class="grow"></div>
+    <button class="sm" onclick="ctl('tick','Running scheduler…')">▶ Run tick</button>
+    <button class="sm" onclick="ctl('replies','Checking replies…')">↻ Check replies</button>
+    <button class="sm" id="pausebtn" onclick="togglePause()">⏸ Pause</button>
+    <button class="sm btn-g" onclick="refresh()">Refresh</button>
+  </div>
+  <div class="content">
+
+  <section class="page on" id="dashboard">
+    <div class="grid g5" id="kpis"><div class="card"><div class="skel"></div><div class="skel" style="width:60%"></div></div><div class="card"><div class="skel"></div></div><div class="card"><div class="skel"></div></div><div class="card"><div class="skel"></div></div><div class="card"><div class="skel"></div></div></div>
+    <div class="grid g3 mt">
+      <div class="card"><h3>Pipeline</h3><canvas id="c-funnel" height="210"></canvas></div>
+      <div class="card" style="grid-column:span 2"><h3>Last 14 days <span class="grow"></span><span class="pill info">sent</span><span class="pill" style="background:#ede9fe;color:#6d28d9">replies</span><span class="pill">scheduled</span></h3><canvas id="c-timeline" height="210"></canvas></div>
+    </div>
+    <div class="grid g3 mt">
+      <div class="card"><h3>By group</h3><canvas id="c-groups" height="200"></canvas></div>
+      <div class="card"><h3>Reply sentiment</h3><canvas id="c-sent" height="200"></canvas><div id="d-nosent" class="empty" style="display:none">No replies yet</div></div>
+      <div class="card"><h3>Sequence reach</h3><canvas id="c-steps" height="160"></canvas><div id="d-seqlist" class="small mt"></div></div>
+    </div>
+    <div class="grid g3 mt">
+      <div class="card"><h3>Scheduler</h3><div id="d-sched"></div></div>
+      <div class="card"><h3>Next first emails</h3><table id="d-next"></table></div>
+      <div class="card"><h3>Next follow-ups</h3><table id="d-nextfu"></table></div>
+    </div>
+    <div class="card mt"><h3>Recent activity <span class="grow"></span><button class="xs btn-g" onclick="go('logs')">All logs →</button></h3><div class="tbl-wrap" style="max-height:300px"><table id="d-log"></table></div></div>
+  </section>
+
+  <section class="page" id="recipients">
+    <div class="card">
+      <div class="row">
+        <input id="r-q" placeholder="Search name, email, company…" style="width:260px" oninput="renderRecipients()">
+        <select id="r-status" onchange="renderRecipients()"><option value="">All statuses</option></select>
+        <select id="r-group" onchange="renderRecipients()"><option value="">All groups</option></select>
+        <span class="muted small" id="r-count"></span>
+        <div class="grow"></div>
+        <button onclick="openImport()">⇪ Import (paste)</button>
+        <button class="btn-p" onclick="openEdit(null)">+ Add recipient</button>
+      </div>
+      <div class="tbl-wrap mt"><table id="r-table"></table></div>
+      <div class="pager"><span id="r-pageinfo"></span><button class="sm" onclick="page(-1)">‹</button><button class="sm" onclick="page(1)">›</button>
+        <select id="r-size" class="sm" onchange="renderRecipients()"><option>50</option><option>100</option><option>250</option><option>500</option></select></div>
+      <div class="bulk" id="bulk">
+        <span class="b" id="bulk-n">0 selected</span>
+        <button class="sm" onclick="bulkSchedule()">◷ Schedule…</button>
+        <button class="sm" onclick="bulk('sendNow','Send NOW to the selected rows, ignoring their Scheduled Date?')">⚡ Send now</button>
+        <button class="sm" onclick="bulk('validate')">✓ Validate</button>
+        <button class="sm" onclick="bulk('pause')">⏸ Pause</button>
+        <button class="sm" onclick="bulk('resume')">▶ Resume</button>
+        <button class="sm" onclick="bulk('retry')">↺ Retry errors</button>
+        <button class="sm" onclick="bulk('unschedule')">✕ Unschedule</button>
+        <button class="sm" onclick="bulk('draftFollowUp','Create a follow-up draft in Gmail for each selected thread? Rows become MANUAL.')">✎ Draft follow-up</button>
+        <button class="sm" onclick="bulkRespond()">↩ Respond…</button>
+        <button class="sm" onclick="bulk('skip')">⊘ Skip</button>
+        <button class="sm" onclick="bulk('suppress','Add to the Unsubscribed list? They will never be emailed again.')">⛔ Suppress</button>
+        <button class="sm" onclick="bulk('delete','Delete the selected rows that were never sent? This cannot be undone.')">🗑 Delete</button>
+        <button class="sm btn-g" onclick="clearSel()">Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="schedule">
+    <div class="grid g2">
+      <div class="card">
+        <h3>1 · Who</h3>
+        <div class="chips" id="s-scope">
+          <div class="chip on" data-v="unscheduled">All unscheduled</div><div class="chip" data-v="group">A group</div><div class="chip" data-v="rows">Selected in Recipients (<span id="s-seln">0</span>)</div><div class="chip" data-v="all">Everything (overwrite)</div>
+        </div>
+        <div class="row mt" id="s-groupwrap" style="display:none"><div class="field"><span class="lbl">Group</span><select id="s-group"></select></div></div>
+        <h3 class="mt">2 · When to start</h3>
+        <div class="chips" id="s-start">
+          <div class="chip on" data-v="now">Now</div><div class="chip" data-v="in_1h">In 1 hour</div><div class="chip" data-v="in_3h">In 3 hours</div><div class="chip" data-v="tomorrow_same">Tomorrow, same time</div><div class="chip" data-v="tomorrow_window">Tomorrow at window start</div><div class="chip" data-v="next_monday">Next Monday</div><div class="chip" data-v="next_week_same">In one week</div><div class="chip" data-v="custom">Custom…</div>
+        </div>
+        <div class="row mt" id="s-customwrap" hidden><div class="field"><span class="lbl">Custom start · timezone <span id="s-tz"></span></span><input type="datetime-local" id="s-custom"></div></div>
+      </div>
+      <div class="card">
+        <h3>3 · Spacing &amp; batches</h3>
+        <div class="grid g2">
+          <div class="field"><span class="lbl">Gap between emails (min)</span><input type="number" id="s-gap" min="1"></div>
+          <div class="field"><span class="lbl">Max per day</span><input type="number" id="s-cap" min="0"></div>
+          <div class="field"><span class="lbl">Emails per batch (0 = none)</span><input type="number" id="s-batch" min="0"></div>
+          <div class="field"><span class="lbl">Pause between batches (min)</span><input type="number" id="s-pause" min="0"></div>
+        </div>
+        <div class="row mt"><label class="switch"><input type="checkbox" id="s-window" checked><span></span></label><span>Only inside the send window (skips nights &amp; off days)</span></div>
+        <div class="row"><label class="switch"><input type="checkbox" id="s-overwrite"><span></span></label><span>Overwrite existing Scheduled Dates</span></div>
+        <div class="row mt end"><button onclick="schedule(true)">Preview</button><button class="btn-p" onclick="schedule(false)">Apply schedule</button></div>
+        <div id="s-result"></div>
+      </div>
+    </div>
+    <div class="card mt">
+      <h3>Send immediately <span class="muted" style="text-transform:none;font-weight:400">— ignores Scheduled Date · still validated, suppressed and rate-capped · overflow is queued for the next tick</span></h3>
+      <div class="row">
+        <div class="chips" id="f-scope"><div class="chip" data-v="rows">Selected in Recipients</div><div class="chip" data-v="group">A group</div><div class="chip on" data-v="unscheduled">All unscheduled</div><div class="chip" data-v="all">Everything pending</div></div>
+        <div class="field" id="f-groupwrap" style="display:none"><select id="f-group"></select></div>
+        <div class="grow"></div>
+        <span class="row small"><label class="switch"><input type="checkbox" id="f-window" checked><span></span></label>Ignore send window</span>
+        <span class="row small"><label class="switch"><input type="checkbox" id="f-fu" checked><span></span></label>Include due follow-ups</span>
+        <button class="btn-d" onclick="forceSend()">⚡ Send now</button>
+      </div>
+      <div id="f-result"></div>
+    </div>
+  </section>
+
+  <section class="page" id="templates">
+    <div class="card">
+      <h3>Follow-up sequence <span class="muted" style="text-transform:none;font-weight:400">— each step is a Gmail Draft matched by exact subject · delay counts from the previous send · stops on any reply</span></h3>
+      <table id="t-seq"></table>
+      <div class="row mt"><button class="sm" onclick="addStep()">+ Add step</button><div class="grow"></div><button class="btn-p sm" onclick="saveSeq()">Save sequence</button></div>
+    </div>
+    <div class="card mt">
+      <h3>Reply templates <span class="muted" style="text-transform:none;font-weight:400">— used from Replies (draft or send into the thread) · optional auto-response for INTERESTED in Settings</span></h3>
+      <table id="t-resp"></table>
+      <div class="row mt"><button class="sm" onclick="addResp()">+ Add template</button><div class="grow"></div><button class="btn-p sm" onclick="saveResp()">Save templates</button></div>
+    </div>
+    <div class="card mt"><h3>Variables <span class="muted" style="text-transform:none;font-weight:400">— click to copy · {{Key|fallback}} for optional values</span></h3><div class="chips" id="t-vars"></div><div class="help mt" id="t-api"></div></div>
+  </section>
+
+  <section class="page" id="replies">
+    <div class="card">
+      <h3>Replies <span class="grow"></span><div class="chips" id="rp-filter"><div class="chip on" data-v="">All</div><div class="chip" data-v="POSITIVE">Positive</div><div class="chip" data-v="NEUTRAL">Neutral</div><div class="chip" data-v="NEGATIVE">Negative</div><div class="chip" data-v="AUTO_REPLY">Auto-reply</div><div class="chip" data-v="BOUNCE">Bounced</div></div></h3>
+      <div id="rp-list"></div>
+    </div>
+    <div class="card mt"><h3>Waiting for a reply <span class="muted" style="text-transform:none;font-weight:400">— sequence runs automatically · take over any thread by drafting the next step yourself</span></h3><div class="tbl-wrap" style="max-height:50vh"><table id="rp-await"></table></div></div>
+  </section>
+
+  <section class="page" id="settings">
+    <div class="row"><span class="help" id="cfg-tz"></span><div class="grow"></div><button class="btn-p" onclick="saveConfig()">Save changes <span id="cfg-dirty" class="pill" style="display:none">0</span></button></div>
+    <div class="grid g2 mt" id="cfg-groups"></div>
+    <div class="card mt"><h3>Custom variables <span class="muted" style="text-transform:none;font-weight:400">— any key here becomes {{Key}} in your drafts</span></h3><table id="cfg-custom"></table><div class="row mt"><button class="sm" onclick="addCustomVar()">+ Add variable</button></div></div>
+    <div class="card mt"><h3>Operations</h3>
+      <div class="row">
+        <button onclick="ctl('install','Installing trigger…')">⏱ Install trigger</button><button onclick="ctl('remove')">Remove trigger</button><button onclick="ctl('setup')">Repair sheets</button><button onclick="deployTest()">🧪 Deployment test</button><button onclick="ctl('webapp')">🔗 Full-screen URL</button>
+        <div class="grow"></div><button class="btn-d" onclick="emergency()">🛑 Emergency stop</button>
+      </div>
+      <div id="ops-result"></div>
+    </div>
+  </section>
+
+  <section class="page" id="logs">
+    <div class="card">
+      <div class="row">
+        <select id="l-level" onchange="loadLogs()"><option value="">All levels</option><option>DEBUG</option><option>INFO</option><option>WARN</option><option>ERROR</option></select>
+        <input id="l-q" placeholder="Search event, details, recipient, row…" style="width:300px" onkeydown="if(event.key==='Enter')loadLogs()">
+        <select id="l-limit" onchange="loadLogs()"><option>200</option><option selected>500</option><option>1000</option><option>3000</option></select>
+        <span class="row small"><label class="switch"><input type="checkbox" id="l-auto" onchange="autoLogs()"><span></span></label>Auto-refresh 15 s</span>
+        <span class="muted small" id="l-info"></span><div class="grow"></div>
+        <button class="sm" onclick="loadLogs()">Refresh</button><button class="sm btn-g" onclick="clearLogs()">Clear logs</button>
+      </div>
+      <div class="tbl-wrap mt" style="max-height:72vh"><table id="l-table"></table></div>
+    </div>
+  </section>
+
+  </div>
+</main>
+
+<div id="toasts"></div>
+<div id="modal"><div class="box"><div class="hd"><span id="m-title"></span><div class="grow"></div><button class="btn-g sm" onclick="closeModal()">✕</button></div><div class="bd" id="m-body"></div><div class="ft" id="m-foot"></div></div></div>
+<div id="busy"><div><span class="spin"></span><span id="busy-txt">Working…</span></div></div>
+
+<script>
+const INITIAL_TAB = '<?= tab ?>', MODE = '<?= mode ?>';
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function call(fn, ...args){ return new Promise((res, rej) => google.script.run.withSuccessHandler(r => res(r)).withFailureHandler(e => rej(e))[fn](...args)); }
+function busy(on, txt){ $('#busy').style.display = on ? 'flex' : 'none'; if (txt) $('#busy-txt').textContent = txt; }
+function toast(msg, kind){ const t = document.createElement('div'); t.className = 'toast ' + (kind || ''); t.textContent = msg; $('#toasts').appendChild(t); setTimeout(() => t.remove(), kind === 'err' ? 8000 : 4500); }
+function result(el, text, err){ $(el).innerHTML = `<div class="result ${err ? 'err' : ''}">${esc(text)}</div>`; }
+function modal(title, body, buttons){ $('#m-title').textContent = title; $('#m-body').innerHTML = body; $('#m-foot').innerHTML = ''; (buttons || [{ label: 'Close', fn: closeModal }]).forEach(b => { const btn = document.createElement('button'); btn.className = b.cls || ''; btn.textContent = b.label; btn.onclick = b.fn; $('#m-foot').appendChild(btn); }); $('#modal').style.display = 'flex'; }
+function closeModal(){ $('#modal').style.display = 'none'; }
+function confirmM(title, text){ return new Promise(res => modal(title, `<p>${esc(text)}</p>`, [{ label: 'Cancel', fn: () => { closeModal(); res(false); } }, { label: 'Confirm', cls: 'btn-p', fn: () => { closeModal(); res(true); } }])); }
+async function run(fn, args, opts){ opts = opts || {}; try { busy(true, opts.busy || 'Working…'); const r = await call(fn, ...(args || [])); busy(false); return r; } catch (e) { busy(false); toast((e && e.message) || String(e), 'err'); throw e; } }
+function chips(sel, onChange){ const box = $(sel); box.querySelectorAll('.chip').forEach(c => c.onclick = () => { box.querySelectorAll('.chip').forEach(x => x.classList.remove('on')); c.classList.add('on'); onChange && onChange(c.dataset.v); }); }
+const chipVal = sel => { const c = $(sel + ' .chip.on'); return c ? c.dataset.v : ''; };
+const TITLES = { dashboard: 'Dashboard', recipients: 'Recipients', schedule: 'Schedule & send', templates: 'Sequence & templates', replies: 'Replies & follow-ups', settings: 'Settings', logs: 'Logs' };
+
+/* navigation */
+$$('nav button[data-page]').forEach(b => b.onclick = () => go(b.dataset.page));
+function go(p){ $$('nav button[data-page]').forEach(b => b.classList.toggle('on', b.dataset.page === p)); $$('.page').forEach(s => s.classList.toggle('on', s.id === p)); $('#title').textContent = TITLES[p]; load(p); }
+function load(p){ ({ dashboard: loadDashboard, recipients: loadRecipients, schedule: loadSchedule, templates: loadTemplates, replies: loadReplies, settings: loadConfig, logs: loadLogs })[p](); }
+function refresh(){ load($('.page.on').id); }
+
+/* header controls */
+let PAUSED = false;
+async function ctl(action, busyTxt){ const m = await run('api_control', [action], { busy: busyTxt || 'Working…' });
+  if (action === 'webapp') modal('Full-screen Mail Engine', `<p>Open Mail Engine in its own browser tab (no sheet needed):</p><p class="mono" style="word-break:break-all">${esc(m)}</p><p class="help">Not deployed yet? Apps Script ▸ Deploy ▸ New deployment ▸ type <b>Web app</b> ▸ Execute as <b>Me</b> ▸ Who has access <b>Only myself</b>.</p>`);
+  else toast(m, 'ok');
+  if (['install', 'remove', 'pause', 'resume', 'tick', 'replies'].includes(action)) loadDashboard(); }
+function togglePause(){ ctl(PAUSED ? 'resume' : 'pause'); }
+async function emergency(){ if (!await confirmM('Emergency stop', 'Pause sending AND remove the trigger? Nothing runs until you install the trigger and resume.')) return; await ctl('pause'); await ctl('remove'); }
+async function deployTest(){ const r = await run('api_deployTest', [], { busy: 'Running deployment test…' }); result('#ops-result', r.lines.join('\n'), !r.ok); }
+
+/* charts */
+const charts = {};
+function chart(id, cfg){ if (charts[id]) { charts[id].destroy(); delete charts[id]; } if (typeof Chart === 'undefined') { const c = $('#' + id); if (c && !c.nextElementSibling) c.insertAdjacentHTML('afterend', '<div class="empty">Charts unavailable (Chart.js CDN blocked)</div>'); return; } charts[id] = new Chart($('#' + id), cfg); }
+if (typeof Chart !== 'undefined') { Chart.defaults.font.family = 'Inter, system-ui, sans-serif'; Chart.defaults.font.size = 11; Chart.defaults.plugins.legend.labels.boxWidth = 10; }
+
+/* dashboard */
+async function loadDashboard(){
+  let d; try { d = await run('api_dashboard', [], { busy: 'Loading dashboard…' }); } catch (e) { return; }
+  PAUSED = d.paused;
+  $('#state').className = 'pill ' + (d.paused ? 'warn' : d.triggers ? 'ok' : 'bad'); $('#state').innerHTML = `<i></i>${d.paused ? 'PAUSED' : d.triggers ? 'RUNNING' : 'NO TRIGGER'}`;
+  $('#pausebtn').textContent = d.paused ? '▶ Resume' : '⏸ Pause';
+  $('#foot').textContent = `${d.me}\n${d.tz} · ${d.now}`;
+  const f = d.funnel;
+  const kpi = (label, v, sub, cls) => `<div class="card"><h3>${label}</h3><div class="kpi ${cls || ''}">${v}</div><div class="sub">${sub || ''}</div></div>`;
+  const problems = f.bounced + f.invalid + f.error;
+  $('#kpis').innerHTML =
+    kpi('Recipients', f.total, `${f.unscheduled} not scheduled · ${f.paused} paused / skipped`) +
+    kpi('Scheduled', f.scheduled, `${d.dueNow} due now · window ${d.windowOpen ? 'open' : 'closed'}`) +
+    kpi('Sent', f.sent, `${f.awaiting} awaiting reply · ${f.completed} sequence done`) +
+    kpi('Replied', f.replied, `<span class="badge sn-POSITIVE">${f.interested} interested</span> <span class="badge sn-NEGATIVE">${f.notInterested} no</span>`) +
+    kpi('Problems', problems, `${f.bounced} bounced · ${f.invalid} invalid · ${f.error} errors · ${f.drafted} drafted`, problems ? 'bad' : '');
+  chart('c-funnel', { type: 'doughnut', data: { labels: ['Not scheduled', 'Scheduled', 'Awaiting reply', 'Replied', 'Completed', 'Bounced / invalid', 'Paused / skipped', 'Errors'],
+    datasets: [{ data: [f.unscheduled, f.scheduled, f.awaiting, f.replied, f.completed, f.bounced + f.invalid, f.paused, f.error], backgroundColor: ['#cbd5e1', '#38bdf8', '#3b82f6', '#8b5cf6', '#64748b', '#ef4444', '#f59e0b', '#b91c1c'], borderWidth: 1 }] },
+    options: { cutout: '62%', plugins: { legend: { position: 'right' } } } });
+  chart('c-timeline', { type: 'line', data: { labels: d.timeline.days, datasets: [
+    { label: 'Sent', data: d.timeline.sent, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,.12)', fill: true, tension: .3 },
+    { label: 'Replies', data: d.timeline.replies, borderColor: '#7c3aed', tension: .3 },
+    { label: 'Scheduled', data: d.timeline.scheduled, borderColor: '#94a3b8', borderDash: [4, 4], tension: .3 } ] },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } } });
+  const groups = Object.keys(d.byGroup).sort();
+  chart('c-groups', { type: 'bar', data: { labels: groups, datasets: [
+    { label: 'Queued', data: groups.map(g => d.byGroup[g].scheduled), backgroundColor: '#38bdf8' }, { label: 'Sent', data: groups.map(g => d.byGroup[g].sent), backgroundColor: '#2563eb' },
+    { label: 'Replied', data: groups.map(g => d.byGroup[g].replied), backgroundColor: '#8b5cf6' }, { label: 'Other', data: groups.map(g => d.byGroup[g].other), backgroundColor: '#cbd5e1' } ] },
+    options: { scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } } } } });
+  const sk = Object.keys(d.bySentiment); $('#d-nosent').style.display = sk.length ? 'none' : 'block'; $('#c-sent').style.display = sk.length ? '' : 'none';
+  if (sk.length) chart('c-sent', { type: 'doughnut', data: { labels: sk, datasets: [{ data: sk.map(k => d.bySentiment[k]), backgroundColor: sk.map(k => ({ POSITIVE: '#22c55e', NEGATIVE: '#ef4444', NEUTRAL: '#94a3b8', AUTO_REPLY: '#f59e0b', BOUNCE: '#b91c1c' }[k] || '#cbd5e1')) }] }, options: { cutout: '62%', plugins: { legend: { position: 'right' } } } });
+  chart('c-steps', { type: 'bar', data: { labels: d.sequence.map(s => 'Step ' + s.step), datasets: [{ label: 'Reached', data: d.sequence.map(s => s.sentCount), backgroundColor: '#2563eb', borderRadius: 6 }] }, options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } } });
+  $('#d-seqlist').innerHTML = d.sequence.map(s => `<div class="row small" style="gap:6px;flex-wrap:nowrap"><span class="b">${s.step}.</span><span class="grow" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(s.subject)}</span>${s.step > 1 ? `<span class="muted">+${s.delay}h</span>` : ''}${s.draftOk ? '<span class="pill ok">draft</span>' : '<span class="pill bad">draft missing</span>'}</div>`).join('');
+  $('#d-sched').innerHTML = `<div class="row"><span class="pill ${d.triggers ? 'ok' : 'bad'}"><i></i>${d.triggers ? 'trigger installed' : 'no trigger'}</span><span class="pill ${d.gmailApi ? 'ok' : 'warn'}">Gmail API ${d.gmailApi ? 'on' : 'off'}</span></div>
+    <div class="small mt">Last tick <b>${esc(d.lastTick)}</b><br><span class="mono muted">${esc(d.lastTickStats)}</span></div>
+    <div class="small mt">Window <b>${d.windowOpen ? 'OPEN' : 'CLOSED'}</b> · ${esc(d.window)}</div>
+    <div class="small mt">Sent this hour <b>${d.sentHour}</b> / ${d.maxHour}<div class="bar"><i style="width:${Math.min(100, d.maxHour ? d.sentHour / d.maxHour * 100 : 0)}%"></i></div></div>
+    <div class="small mt">Sent today <b>${d.sentDay}</b> / ${d.maxDay} · Gmail quota left <b>${d.quota}</b><div class="bar"><i style="width:${Math.min(100, d.maxDay ? d.sentDay / d.maxDay * 100 : 0)}%"></i></div></div>
+    <div class="small mt muted">${d.suppression} suppressed addresses</div>`;
+  $('#d-next').innerHTML = d.nextSends.length ? d.nextSends.map(x => `<tr><td class="mono">${x.at}</td><td>${esc(x.to)}</td><td class="muted">${esc(x.group)}</td></tr>`).join('') : '<tr><td class="empty">Nothing scheduled — use Schedule &amp; send</td></tr>';
+  $('#d-nextfu').innerHTML = d.nextFollowUps.length ? d.nextFollowUps.map(x => `<tr><td class="mono">${x.at}</td><td>${esc(x.to)}</td><td class="muted">step ${x.step}</td></tr>`).join('') : '<tr><td class="empty">None pending</td></tr>';
+  $('#d-log').innerHTML = '<tr><th>Time</th><th>Level</th><th>Row</th><th>Recipient</th><th>Event</th><th>Details</th></tr>' + (d.logs.map(l => `<tr class="log-${l.level}"><td class="mono">${l.ts}</td><td><span class="badge">${l.level}</span></td><td>${l.row || ''}</td><td>${esc(l.to)}</td><td>${esc(l.event)}</td><td class="muted mono">${esc(l.details)}</td></tr>`).join('') || '<tr><td class="empty" colspan="6">No activity yet</td></tr>');
+}
+
+/* recipients */
+let R = { rows: [], custom: [], groups: [], tz: '' }, SEL = new Set(), PAGE = 0, SORT = { k: 'row', d: 1 };
+async function loadRecipients(){ try { R = await run('api_recipients', [], { busy: 'Loading recipients…' }); } catch (e) { return; }
+  const statuses = [...new Set(R.rows.map(r => r.status))].sort();
+  const keepS = $('#r-status').value, keepG = $('#r-group').value;
+  $('#r-status').innerHTML = '<option value="">All statuses</option>' + statuses.map(s => `<option ${s === keepS ? 'selected' : ''}>${esc(s)}</option>`).join('');
+  $('#r-group').innerHTML = '<option value="">All groups</option>' + R.groups.map(g => `<option ${g === keepG ? 'selected' : ''}>${esc(g)}</option>`).join('');
+  SEL = new Set([...SEL].filter(x => R.rows.some(r => r.row === x))); renderRecipients(); }
+function filtered(){ const q = $('#r-q').value.toLowerCase(), st = $('#r-status').value, g = $('#r-group').value;
+  const rows = R.rows.filter(r => (!st || r.status === st) && (!g || r.group === g) && (!q || (r.recipient + ' ' + Object.values(r.data).join(' ') + ' ' + r.error).toLowerCase().includes(q)));
+  rows.sort((a, b) => { const va = a[SORT.k] ?? '', vb = b[SORT.k] ?? ''; return (va > vb ? 1 : va < vb ? -1 : 0) * SORT.d; }); return rows; }
+function sortBy(k){ SORT = SORT.k === k ? { k, d: -SORT.d } : { k, d: 1 }; renderRecipients(); }
+function page(dir){ PAGE = Math.max(0, PAGE + dir); renderRecipients(); }
+function nameOf(r){ return r.data.name || r.data.Name || r.data['Full Name'] || ''; }
+function companyOf(r){ return r.data.company || r.data.Company || ''; }
+function renderRecipients(){
+  const rows = filtered(); const size = +$('#r-size').value; const pages = Math.max(1, Math.ceil(rows.length / size)); PAGE = Math.min(PAGE, pages - 1);
+  const slice = rows.slice(PAGE * size, PAGE * size + size);
+  $('#r-count').textContent = `${rows.length} of ${R.rows.length}`; $('#r-pageinfo').textContent = `Page ${PAGE + 1} / ${pages}`;
+  const th = (k, label) => `<th style="cursor:pointer" onclick="sortBy('${k}')">${label} ${SORT.k === k ? (SORT.d > 0 ? '↑' : '↓') : ''}</th>`;
+  $('#r-table').innerHTML = `<tr><th><input type="checkbox" onchange="selPage(this.checked)" ${slice.length && slice.every(r => SEL.has(r.row)) ? 'checked' : ''}></th>${th('row', '#')}${th('recipient', 'Recipient')}${th('group', 'Group')}${th('scheduledMs', 'Scheduled')}${th('status', 'Status')}<th>Step</th><th>Sent / next</th><th>Reply</th><th>Valid</th><th>Notes</th><th></th></tr>` +
+    (slice.map(r => `<tr>
+      <td><input type="checkbox" ${SEL.has(r.row) ? 'checked' : ''} onchange="sel(${r.row}, this.checked)"></td>
+      <td class="muted">${r.row}</td>
+      <td><div class="b">${esc(nameOf(r) || r.recipient)}</div><div class="muted small">${esc(nameOf(r) ? r.recipient : '')}${companyOf(r) ? ' · ' + esc(companyOf(r)) : ''}</div></td>
+      <td>${esc(r.group)}</td><td class="mono">${r.scheduled || '<span class="muted">—</span>'}</td>
+      <td><span class="badge st-${esc(r.status)}">${esc(r.status)}</span></td><td class="num">${r.step || ''}</td>
+      <td class="mono small">${r.sentAt ? 'sent ' + r.sentAt : ''}${r.nextAt ? '<br>next ' + r.nextAt : ''}</td>
+      <td>${r.sentiment ? `<span class="badge sn-${esc(r.sentiment)}">${esc(r.sentiment)}</span>` : (r.replyStatus ? `<span class="muted small">${esc(r.replyStatus)}</span>` : '')}</td>
+      <td class="small ${r.validation && r.validation !== 'VALID' ? 'b' : 'muted'}">${esc(r.validation)}</td>
+      <td class="small">${r.error ? `<span style="color:var(--bad)">${esc(r.error)}</span>` : ''}${r.response ? `<span class="badge">${esc(r.response)}</span>` : ''}</td>
+      <td><div class="menu"><button class="xs btn-g" onclick="this.parentElement.classList.toggle('open');event.stopPropagation()">⋯</button><div class="dd">
+        <button onclick="preview(${r.row})">👁 Preview email</button><button onclick="openEdit(${r.row})">✎ Edit</button><button onclick="sendTest(${r.row})">✉ Send test to me</button>
+        <button onclick="one(${r.row},'sendNow','Send now to this recipient?')">⚡ Send now</button>${r.step > 0 && r.status !== 'MANUAL' ? `<button onclick="one(${r.row},'draftFollowUp')">✎ Draft follow-up</button>` : ''}
+        ${r.thread ? `<a class="btn" href="https://mail.google.com/mail/u/0/#all/${esc(r.thread)}" target="_blank">↗ Open thread</a>` : ''}
+        <button onclick="one(${r.row},'pause')">⏸ Pause</button><button onclick="one(${r.row},'resume')">▶ Resume / clear</button><button onclick="one(${r.row},'skip')">⊘ Skip</button></div></div></td>
+    </tr>`).join('') || `<tr><td colspan="12" class="empty">No recipients match.${R.rows.length ? '' : ' Add one or import a list.'}</td></tr>`);
+  $('#bulk').style.display = SEL.size ? 'flex' : 'none'; $('#bulk-n').textContent = SEL.size + ' selected'; $('#s-seln').textContent = SEL.size;
+}
+document.addEventListener('click', () => $$('.menu.open').forEach(m => m.classList.remove('open')));
+function sel(row, on){ on ? SEL.add(row) : SEL.delete(row); renderRecipients(); }
+function selPage(on){ const size = +$('#r-size').value; filtered().slice(PAGE * size, (PAGE + 1) * size).forEach(r => on ? SEL.add(r.row) : SEL.delete(r.row)); renderRecipients(); }
+function clearSel(){ SEL.clear(); renderRecipients(); }
+async function bulk(action, confirmText, arg){ if (!SEL.size) return; if (confirmText && !await confirmM(action, confirmText)) return;
+  const r = await run('api_recipientAction', [[...SEL], action, arg || null], { busy: 'Applying…' });
+  toast(`${action}: ${r.count} done, ${r.skipped} skipped${r.notes.length ? '\n' + r.notes.slice(0, 5).join('\n') : ''}`, r.count ? 'ok' : ''); if (action === 'delete') SEL.clear(); loadRecipients(); }
+async function one(row, action, confirmText){ SEL = new Set([row]); await bulk(action, confirmText); }
+function bulkSchedule(){ go('schedule'); $$('#s-scope .chip').forEach(c => c.classList.toggle('on', c.dataset.v === 'rows')); }
+async function bulkRespond(){ const t = await run('api_templates'); if (!t.responses.length) return toast('No reply templates yet — add them under Sequence & templates.', 'err');
+  modal('Respond to selected', `<div class="field"><span class="lbl">Template</span><select id="m-key">${t.responses.map(r => `<option value="${esc(r.key)}">${esc(r.key)} — ${esc(r.subject)} (${esc(r.sentiment)})</option>`).join('')}</select></div><p class="help">Draft = opens in Gmail Drafts inside each thread for review. Send = goes out immediately.</p>`,
+    [{ label: 'Cancel', fn: closeModal }, { label: 'Create drafts', fn: () => { const k = $('#m-key').value; closeModal(); bulk('respond', null, { key: k, send: false }); } }, { label: 'Send now', cls: 'btn-d', fn: () => { const k = $('#m-key').value; closeModal(); bulk('respond', 'Send this template to all selected rows now?', { key: k, send: true }); } }]); }
+async function preview(row){ const p = await run('api_preview', [row], { busy: 'Rendering…' });
+  modal(`Preview — row ${row}, step ${p.step}`, `<div class="row small"><span class="b">To:</span> ${esc(p.to)} <span class="badge ${p.validation === 'VALID' ? 'sn-POSITIVE' : 'sn-NEGATIVE'}">${esc(p.validation)}</span>${p.attachments.length ? `<span class="badge">📎 ${p.attachments.length}</span>` : ''}</div>
+    <div class="row small mt"><span class="b">Subject:</span> ${esc(p.subject)}</div>${p.missing.length ? `<div class="result err">Missing variables: ${esc(p.missing.join(', '))}</div>` : ''}
+    <div class="mt" style="border:1px solid var(--line);border-radius:10px;padding:14px;background:#fff">${p.html}</div>`, [{ label: 'Send test to me', fn: () => { closeModal(); sendTest(row); } }, { label: 'Close', cls: 'btn-p', fn: closeModal }]); }
+async function sendTest(row){ toast(await run('api_sendTest', [row], { busy: 'Sending test…' }), 'ok'); }
+function localIso(ms){ const d = new Date(ms); const p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
+function openEdit(row){ const r = row ? R.rows.find(x => x.row === row) : null; const locked = !!(r && r.step > 0);
+  const fields = [['Recipient', r ? r.recipient : '', 'email', locked], ['Group', r ? r.group : '', 'text', false], ['Scheduled Date', r ? r.scheduledIso : '', 'datetime-local', locked]].concat(R.custom.map(h => [h, r ? r.data[h] : '', 'text', false]));
+  modal(r ? `Edit row ${row}` : 'Add recipient', `<div class="grid g2">${fields.map(([k, v, t, dis]) => `<div class="field"><span class="lbl">${esc(k)}${k === 'Recipient' ? ' *' : ''}</span><input data-k="${esc(k)}" type="${t}" value="${esc(v)}" ${dis ? 'disabled title="Locked after first send"' : ''}></div>`).join('')}</div>
+    <p class="help mt">Scheduled Date is interpreted in the sheet timezone (${esc(R.tz)}). Leave it empty and use Schedule &amp; send to auto-space.</p>`,
+    [{ label: 'Cancel', fn: closeModal }, { label: r ? 'Save' : 'Add', cls: 'btn-p', fn: async () => { const obj = {}; $$('#m-body input[data-k]').forEach(i => { if (!i.disabled) obj[i.dataset.k] = i.value.replace('T', ' '); }); closeModal();
+      if (r) { await run('api_updateRecipient', [row, obj], { busy: 'Saving…' }); toast('Saved', 'ok'); } else { const n = await run('api_addRecipient', [obj], { busy: 'Adding…' }); toast('Added as row ' + n, 'ok'); } loadRecipients(); } }]); }
+function openImport(){ modal('Import recipients', `<p class="help">Paste rows copied from a spreadsheet (tab-separated) or CSV. First line = headers. <b>Recipient</b> (or Email) is required; any other header becomes a {{variable}} column.</p><textarea id="m-imp" style="width:100%;min-height:220px" placeholder="Recipient&#9;name&#9;Role&#9;company&#9;Group&#10;ana@x.com&#9;Ana Diaz&#9;CTO&#9;Acme&#9;Batch-3"></textarea>`,
+  [{ label: 'Cancel', fn: closeModal }, { label: 'Import', cls: 'btn-p', fn: async () => { const t = $('#m-imp').value; closeModal(); const r = await run('api_importRows', [t], { busy: 'Importing…' }); toast(`Imported ${r.imported}, skipped ${r.skipped}${r.newColumns.length ? '\nNew columns: ' + r.newColumns.join(', ') : ''}`, 'ok'); loadRecipients(); } }]); }
+
+/* schedule & send */
+let G = null;
+async function loadSchedule(){ try { G = await run('api_groups', [], { busy: 'Loading…' }); } catch (e) { return; }
+  const opts = Object.keys(G.groups).sort().map(g => `<option value="${esc(g)}">${esc(g)} — ${G.groups[g].unscheduled} unscheduled / ${G.groups[g].total}</option>`).join('');
+  $('#s-group').innerHTML = opts; $('#f-group').innerHTML = opts; $('#s-tz').textContent = G.tz; $('#s-seln').textContent = SEL.size;
+  if (!$('#s-gap').value) { $('#s-gap').value = G.defaults.gapMin; $('#s-batch').value = G.defaults.batchSize; $('#s-pause').value = G.defaults.batchPauseMin; $('#s-cap').value = G.defaults.perDayCap; } }
+chips('#s-scope', v => { $('#s-groupwrap').style.display = v === 'group' ? '' : 'none'; $('#s-overwrite').checked = v === 'all'; });
+chips('#s-start', v => { $('#s-customwrap').hidden = v !== 'custom'; });
+chips('#f-scope', v => { $('#f-groupwrap').style.display = v === 'group' ? '' : 'none'; });
+function scopeOf(prefix){ const t = chipVal('#' + prefix + '-scope'); if (t === 'rows' && !SEL.size) throw new Error('Select rows in Recipients first.'); return { type: t, group: t === 'group' ? $('#' + prefix + '-group').value : '', rows: t === 'rows' ? [...SEL] : [] }; }
+function scopeLabel(scope){ return scope.type === 'group' ? `group "${scope.group}"` : scope.type === 'rows' ? `${SEL.size} selected rows` : scope.type + ' rows'; }
+async function schedule(dry){ let scope; try { scope = scopeOf('s'); } catch (e) { return result('#s-result', e.message, true); }
+  const payload = { scope, start: { preset: chipVal('#s-start'), value: $('#s-custom').value.replace('T', ' ') }, opts: { gapMin: +$('#s-gap').value, batchSize: +$('#s-batch').value, batchPauseMin: +$('#s-pause').value, perDayCap: +$('#s-cap').value, respectWindow: $('#s-window').checked, overwrite: $('#s-overwrite').checked, dryRun: !!dry } };
+  if (payload.start.preset === 'custom' && !payload.start.value) return result('#s-result', 'Pick a custom start time.', true);
+  if (!dry && !await confirmM('Apply schedule', `Write Scheduled Dates for ${scopeLabel(scope)}?`)) return;
+  const r = await run('api_schedule', [payload], { busy: dry ? 'Calculating…' : 'Scheduling…' });
+  result('#s-result', `${dry ? 'PREVIEW — nothing written yet' : '✓ APPLIED'}\n${r.count} row(s) ${dry ? 'would be ' : ''}scheduled · ${r.skipped} skipped (already scheduled / sent / terminal) · ${r.candidates} in scope\nStart   ${r.start}\nFirst   ${r.first}\nLast    ${r.last}\nPer day ${r.days.join('  ·  ')}`);
+  if (!dry) { toast(`Scheduled ${r.count} rows`, 'ok'); loadSchedule(); } }
+async function forceSend(){ let scope; try { scope = scopeOf('f'); } catch (e) { return result('#f-result', e.message, true); }
+  if (!await confirmM('Send now', `Send immediately to ${scopeLabel(scope)}? This cannot be undone.`)) return;
+  const r = await run('api_forceSend', [{ scope, opts: { ignoreWindow: $('#f-window').checked, includeFollowUps: $('#f-fu').checked } }], { busy: 'Sending…' });
+  result('#f-result', `Candidates ${r.candidates}\nSent ${r.sent} first emails + ${r.followUps} follow-ups\nQueued for next tick ${r.queued}${r.blocked ? ' (' + r.blocked + ')' : ''}\nSkipped ${r.skipped} · Errors ${r.errors}`); toast(`Sent ${r.sent + r.followUps}`, 'ok'); }
+
+/* templates */
+let T = null;
+async function loadTemplates(){ try { T = await run('api_templates', [], { busy: 'Loading…' }); } catch (e) { return; } renderSeq(T.sequence); renderResp(T.responses);
+  $('#t-vars').innerHTML = [...new Set(T.variables)].map(v => `<span class="chip varchip" onclick="copyVar(this.textContent)">{{${esc(v)}}}</span>`).join('');
+  $('#t-api').textContent = T.gmailApi ? 'Gmail API is enabled: follow-ups and responses go inside the original thread.' : 'Enable Services ▸ Gmail API in Apps Script so follow-ups and responses stay inside the original thread.'; }
+function copyVar(t){ if (navigator.clipboard) navigator.clipboard.writeText(t); toast('Copied ' + t, 'ok'); }
+function draftBtn(subject, ok, kind){ return ok ? '<span class="pill ok">draft found</span>' : `<button class="xs" data-s="${esc(subject)}" onclick="createDraft(this.dataset.s,'${kind}')">Create Gmail draft</button>`; }
+async function createDraft(subject, kind){ toast(await run('api_createDraft', [subject, kind], { busy: 'Creating draft…' }), 'ok'); loadTemplates(); }
+function renderSeq(steps){ $('#t-seq').innerHTML = '<tr><th>Step</th><th style="width:38%">Gmail Draft subject (exact)</th><th>Delay days</th><th>Delay hours</th><th>Active</th><th>Notes</th><th>Draft</th><th></th></tr>' + steps.map((s, i) => `<tr data-i="${i}"><td class="b">${i + 1}</td><td><input class="q-sub" style="width:100%" value="${esc(s.subject)}"></td><td><input type="number" class="q-days" min="0" value="${s.days}" ${i === 0 ? 'disabled' : ''} style="width:80px"></td><td><input type="number" class="q-hours" min="0" value="${s.hours}" ${i === 0 ? 'disabled' : ''} style="width:80px"></td><td><label class="switch"><input type="checkbox" class="q-act" ${s.active ? 'checked' : ''}><span></span></label></td><td><input class="q-notes" style="width:100%" value="${esc(s.notes || '')}"></td><td>${draftBtn(s.subject, s.draftOk, 'sequence')}</td><td>${i > 0 ? `<button class="xs btn-g" onclick="delStep(${i})">✕</button>` : ''}</td></tr>`).join(''); }
+function readSeq(){ return $$('#t-seq tr[data-i]').map(tr => ({ subject: tr.querySelector('.q-sub').value, days: +tr.querySelector('.q-days').value || 0, hours: +tr.querySelector('.q-hours').value || 0, active: tr.querySelector('.q-act').checked, notes: tr.querySelector('.q-notes').value })); }
+function addStep(){ const s = readSeq(); s.push({ subject: 'Follow-up ' + s.length, days: 3, hours: 0, active: true, notes: '' }); renderSeq(s); }
+function delStep(i){ const s = readSeq(); s.splice(i, 1); renderSeq(s); }
+async function saveSeq(){ const n = await run('api_saveSequence', [readSeq()], { busy: 'Saving…' }); toast(`Saved ${n} step(s)`, 'ok'); loadTemplates(); }
+function renderResp(list){ $('#t-resp').innerHTML = '<tr><th>Key</th><th style="width:38%">Gmail Draft subject (exact)</th><th>For sentiment</th><th>Notes</th><th>Draft</th><th></th></tr>' + (list.map((r, i) => `<tr data-i="${i}"><td><input class="p-key" value="${esc(r.key)}" style="width:150px"></td><td><input class="p-sub" style="width:100%" value="${esc(r.subject)}"></td><td><select class="p-sen">${['POSITIVE', 'NEUTRAL', 'NEGATIVE'].map(x => `<option ${r.sentiment === x ? 'selected' : ''}>${x}</option>`).join('')}</select></td><td><input class="p-notes" style="width:100%" value="${esc(r.notes || '')}"></td><td>${draftBtn(r.subject, r.draftOk, 'response')}</td><td><button class="xs btn-g" onclick="delResp(${i})">✕</button></td></tr>`).join('') || '<tr><td colspan="6" class="empty">No reply templates yet</td></tr>'); }
+function readResp(){ return $$('#t-resp tr[data-i]').map(tr => ({ key: tr.querySelector('.p-key').value, subject: tr.querySelector('.p-sub').value, sentiment: tr.querySelector('.p-sen').value, notes: tr.querySelector('.p-notes').value })); }
+function addResp(){ const l = readResp(); l.push({ key: 'TEMPLATE_' + (l.length + 1), subject: 'Thanks for your reply', sentiment: 'NEUTRAL', notes: '' }); renderResp(l); }
+function delResp(i){ const l = readResp(); l.splice(i, 1); renderResp(l); }
+async function saveResp(){ const n = await run('api_saveResponses', [readResp()], { busy: 'Saving…' }); toast(`Saved ${n} template(s)`, 'ok'); loadTemplates(); }
+
+/* replies */
+let RP = null;
+async function loadReplies(){ try { RP = await run('api_replies', [], { busy: 'Loading replies…' }); } catch (e) { return; } renderReplies(); }
+chips('#rp-filter', renderReplies);
+function renderReplies(){ if (!RP) return; const flt = chipVal('#rp-filter'); const list = RP.replied.filter(x => !flt || x.sentiment === flt || (flt === 'BOUNCE' && x.replyStatus === 'BOUNCED'));
+  const respOpts = x => RP.responses.map(t => `<option value="${esc(t.key)}" ${t.sentiment === x.sentiment ? 'selected' : ''}>${esc(t.key)}</option>`).join('');
+  $('#rp-list').innerHTML = list.length ? `<div class="grid g2">${list.map(x => `<div class="card" style="box-shadow:none">
+      <div class="row"><span class="badge sn-${esc(x.sentiment)}">${esc(x.sentiment || x.replyStatus)}</span><span class="b">${esc(x.name || x.to)}</span><span class="muted small">${esc(x.company)}</span><div class="grow"></div><span class="muted small">${x.replyAt}</span></div>
+      <div class="muted small">${esc(x.to)} · row ${x.row} · step ${x.step} · <span class="badge st-${esc(x.status)}">${esc(x.status)}</span></div>
+      <div class="snip mt">${esc(x.snippet) || '<span class="muted">(no text)</span>'}</div>
+      ${x.response ? `<div class="mt"><span class="badge">✓ ${esc(x.response)}</span></div>` : ''}
+      <div class="row mt">${RP.responses.length ? `<select id="rs-${x.row}" class="sm">${respOpts(x)}</select><button class="sm" onclick="respond(${x.row},false)">Draft in Gmail</button><button class="sm btn-p" onclick="respond(${x.row},true)">Send</button>` : '<span class="help">Add reply templates under Sequence &amp; templates</span>'}<div class="grow"></div>${x.threadUrl ? `<a class="small" href="${x.threadUrl}" target="_blank">open thread ↗</a>` : ''}</div>
+    </div>`).join('')}</div>` : '<div class="empty">No replies in this filter yet</div>';
+  $('#rp-await').innerHTML = '<tr><th>#</th><th>Who</th><th>Progress</th><th>Next automatic step</th><th>Actions</th></tr>' + (RP.awaiting.map(x => `<tr><td class="muted">${x.row}</td>
+      <td><div class="b">${esc(x.name || x.to)}</div><div class="muted small">${esc(x.company)} · ${esc(x.to)}</div></td>
+      <td class="small">step ${x.step} sent ${x.sentAt}<br><span class="muted">${x.daysSince != null ? x.daysSince + ' day(s) ago' : ''}</span> <span class="badge st-${esc(x.status)}">${esc(x.status)}</span>${x.response ? `<br><span class="badge">${esc(x.response)}</span>` : ''}</td>
+      <td class="small">${x.status === 'SENT' && x.nextAt ? `step ${x.nextStep} at <b>${x.nextAt}</b>` : x.status === 'MANUAL' ? '<span class="muted">manual — no auto follow-up</span>' : '<span class="muted">sequence finished</span>'}</td>
+      <td><div class="row" style="gap:4px">${x.nextStep ? `<button class="xs" onclick="draftFu(${x.row})">✎ Draft step ${x.nextStep}</button>` : ''}${x.status === 'SENT' ? `<button class="xs" onclick="setStatus(${x.row},'MANUAL')">Stop auto</button>` : x.status === 'MANUAL' ? `<button class="xs" onclick="setStatus(${x.row},'SENT')">Resume auto</button>` : ''}${x.threadUrl ? `<a class="btn xs" href="${x.threadUrl}" target="_blank">↗</a>` : ''}</div></td></tr>`).join('') || '<tr><td colspan="5" class="empty">Nobody is waiting</td></tr>'); }
+async function respond(row, sendNow){ const key = $('#rs-' + row).value; if (sendNow && !await confirmM('Send response', `Send "${key}" to row ${row} now?`)) return; toast(await run('api_respond', [row, key, sendNow], { busy: sendNow ? 'Sending…' : 'Creating draft…' }), 'ok'); loadReplies(); }
+async function draftFu(row){ toast(await run('api_draftFollowUp', [row], { busy: 'Creating draft…' }) + '\nEdit and send it from Gmail ▸ Drafts.', 'ok'); loadReplies(); }
+async function setStatus(row, st){ await run('api_setStatus', [row, st]); loadReplies(); }
+
+/* settings */
+let CFG = null, DIRTY = {};
+async function loadConfig(){ try { CFG = await run('api_config', [], { busy: 'Loading settings…' }); } catch (e) { return; } DIRTY = {}; dirty();
+  $('#cfg-tz').innerHTML = CFG.scriptTz === CFG.sheetTz ? `Timezones aligned: ${esc(CFG.scriptTz)}` : `<span class="pill warn">Timezone mismatch</span> script ${esc(CFG.scriptTz)} vs sheet ${esc(CFG.sheetTz)} — fix in Apps Script ▸ Project settings`;
+  $('#cfg-groups').innerHTML = CFG.groups.map(g => `<div class="card"><h3>${esc(g.group)}</h3>${g.fields.map(fieldHtml).join('')}</div>`).join('');
+  $('#cfg-custom').innerHTML = '<tr><th>Key ({{Key}})</th><th>Value</th><th>Notes</th><th></th></tr>' + (CFG.custom.map((c, i) => `<tr><td><input value="${esc(c.key)}" data-ck="${i}" onchange="customChanged()"></td><td><input value="${esc(c.value)}" data-cv="${i}" style="width:100%" onchange="customChanged()"></td><td class="muted small">${esc(c.notes)}</td><td><button class="xs btn-g" data-k="${esc(c.key)}" onclick="delCustom(this.dataset.k)">✕</button></td></tr>`).join('') || '<tr><td colspan="4" class="empty">No custom variables yet</td></tr>'); }
+function fieldHtml(f){ const id = 'cfg-' + f.k.replace(/\W/g, '_'); const key = JSON.stringify(f.k).replace(/"/g, '&quot;');
+  let ctl;
+  if (f.t === 'bool') ctl = `<label class="switch"><input type="checkbox" id="${id}" ${String(f.value).toUpperCase() === 'TRUE' ? 'checked' : ''} onchange="setDirty(${key}, this.checked ? 'TRUE' : 'FALSE')"><span></span></label>`;
+  else if (f.t === 'number') ctl = `<input type="number" id="${id}" value="${esc(f.value)}" style="width:130px" onchange="setDirty(${key}, this.value)">`;
+  else if (f.t === 'time') ctl = `<input type="time" id="${id}" value="${esc(f.value)}" onchange="setDirty(${key}, this.value)">`;
+  else if (f.t === 'select') ctl = `<select id="${id}" onchange="setDirty(${key}, this.value)">${f.options.map(o => `<option ${o === f.value ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+  else if (f.t === 'days') { const set = new Set(String(f.value).split(',').map(s => s.trim().slice(0, 3))); ctl = `<div class="day-chk" id="${id}">${['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => `<label><input type="checkbox" value="${d}" ${set.has(d) ? 'checked' : ''} onchange="setDirty(${key}, [...document.querySelectorAll('#${id} input:checked')].map(i => i.value).join(','))">${d}</label>`).join('')}</div>`; }
+  else ctl = `<input type="text" id="${id}" value="${esc(f.value)}" style="width:100%" onchange="setDirty(${key}, this.value)">`;
+  return `<div class="row mt" style="align-items:flex-start;flex-wrap:nowrap"><div class="field grow"><span class="lbl">${esc(f.label)}</span>${f.help ? `<span class="help">${esc(f.help)}</span>` : ''}</div><div style="flex:0 0 auto;max-width:55%">${ctl}</div></div>`; }
+function setDirty(k, v){ DIRTY[k] = v; dirty(); }
+function dirty(){ const n = Object.keys(DIRTY).length; $('#cfg-dirty').style.display = n ? '' : 'none'; $('#cfg-dirty').textContent = n; }
+function customChanged(){ $$('#cfg-custom input[data-ck]').forEach((i, idx) => { const v = $(`#cfg-custom input[data-cv="${idx}"]`).value; if (i.value.trim()) DIRTY[i.value.trim()] = v; }); dirty(); }
+function addCustomVar(){ modal('Add variable', `<div class="grid g2"><div class="field"><span class="lbl">Key (used as {{Key}})</span><input id="m-k" placeholder="Your Portfolio"></div><div class="field"><span class="lbl">Value</span><input id="m-v" placeholder="https://…"></div></div>`, [{ label: 'Cancel', fn: closeModal }, { label: 'Add', cls: 'btn-p', fn: () => { const k = $('#m-k').value.trim(); if (!k) return; DIRTY[k] = $('#m-v').value; closeModal(); saveConfig(); } }]); }
+async function delCustom(k){ if (!await confirmM('Delete variable', `Remove {{${k}}} from Config?`)) return; await run('api_deleteConfigKey', [k]); toast('Removed', 'ok'); loadConfig(); }
+async function saveConfig(){ if (!Object.keys(DIRTY).length) return toast('Nothing to save'); const n = await run('api_saveConfig', [DIRTY], { busy: 'Saving…' }); toast(`Saved ${n} setting(s)`, 'ok'); loadConfig(); }
+
+/* logs */
+let LOGTIMER = null, LOGROWS = [];
+async function loadLogs(){ let r; try { r = await run('api_logs', [{ level: $('#l-level').value, q: $('#l-q').value, limit: +$('#l-limit').value }], { busy: 'Loading logs…' }); } catch (e) { return; }
+  LOGROWS = r.rows; $('#l-info').textContent = `${r.rows.length} shown · scanned last ${r.scanned} of ${r.total}`;
+  $('#l-table').innerHTML = '<tr><th>Time</th><th>Level</th><th>Exec</th><th>Row</th><th>Recipient</th><th>Event</th><th>Details</th></tr>' + (r.rows.map((l, i) => `<tr class="log-${l.level}" style="cursor:pointer" onclick="showLog(${i})"><td class="mono">${l.ts}</td><td><span class="badge">${l.level}</span></td><td class="mono muted">${esc(l.exec)}</td><td>${esc(l.row)}</td><td>${esc(l.to)}</td><td>${esc(l.event)}</td><td class="mono muted" style="max-width:520px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.details)}</td></tr>`).join('') || '<tr><td colspan="7" class="empty">No log entries</td></tr>'); }
+function showLog(i){ const l = LOGROWS[i]; let det = l.details; try { det = JSON.stringify(JSON.parse(l.details), null, 2); } catch (e) { /* plain text */ }
+  modal(`${l.level} · ${l.event}`, `<div class="small muted">${l.ts} · execution ${esc(l.exec)}${l.row ? ' · row ' + esc(l.row) : ''}${l.to ? ' · ' + esc(l.to) : ''}</div><pre class="mono" style="white-space:pre-wrap;background:#f8fafc;padding:12px;border-radius:8px;margin-top:10px">${esc(det)}</pre>`); }
+function autoLogs(){ clearInterval(LOGTIMER); if ($('#l-auto').checked) LOGTIMER = setInterval(() => { if ($('#logs').classList.contains('on')) loadLogs(); }, 15000); }
+async function clearLogs(){ if (!await confirmM('Clear logs', 'Delete all log rows? The engine keeps working.')) return; toast((await run('api_clearLogs')) + ' rows removed', 'ok'); loadLogs(); }
+
+/* boot */
+if (MODE === 'dialog') $('.topbar').insertAdjacentHTML('beforeend', '<button class="sm btn-g" onclick="ctl(\'webapp\')">⤢ Full screen</button>');
+go(TITLES[INITIAL_TAB] ? INITIAL_TAB : 'dashboard');
+</script>
+</body>
+</html>

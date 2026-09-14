@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f4f6f9;--panel:#fff;--line:#e5e8ee;--ink:#161b22;--muted:#6b7684;--accent:#2563eb;--accent-2:#1d4ed8;--ok:#15803d;--warn:#b45309;--bad:#b91c1c;--soft:#eef3ff;--nav:#0f172a;--nav-ink:#cbd5e1;--r:12px;--shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.1)}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font:13.5px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);display:flex}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+nav{width:216px;flex:0 0 216px;background:var(--nav);color:var(--nav-ink);display:flex;flex-direction:column;padding:14px 10px;gap:2px}
+nav .brand{display:flex;align-items:center;gap:10px;padding:8px 10px 18px;color:#fff;font-weight:700;font-size:15px}
+nav .brand i{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#60a5fa,#2563eb);display:inline-block}
+nav button{all:unset;display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;color:var(--nav-ink);font-size:13.5px;transition:background .15s}
+nav button:hover{background:rgba(255,255,255,.06)}nav button.on{background:rgba(96,165,250,.18);color:#fff;font-weight:600}
+nav button .ic{width:18px;text-align:center;opacity:.9}nav .grow{flex:1}
+nav .foot{font-size:11px;opacity:.6;padding:8px 12px;line-height:1.4;white-space:pre-line;word-break:break-all}
+main{flex:1;min-width:0;display:flex;flex-direction:column;height:100vh}
+.topbar{display:flex;align-items:center;gap:10px;padding:12px 22px;background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.topbar h1{font-size:17px;margin:0;font-weight:700}.topbar .grow{flex:1}
+.content{padding:20px 22px 40px;overflow:auto;flex:1}
+.page{display:none;animation:fade .2s}.page.on{display:block}@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px}
+.card h3{margin:0 0 10px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card h3 .grow{flex:1}.grid{display:grid;gap:14px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+@media(max-width:1100px){.g4,.g5{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr 1fr}}@media(max-width:760px){.g2,.g3,.g4,.g5{grid-template-columns:1fr}nav{display:none}}
+.mt{margin-top:14px}.kpi{font-size:28px;font-weight:700;line-height:1.1}.kpi.bad{color:var(--bad)}.sub{color:var(--muted);font-size:12px;margin-top:4px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;background:#eef0f4;color:#374151}
+.pill.ok{background:#dcfce7;color:var(--ok)}.pill.bad{background:#fee2e2;color:var(--bad)}.pill.warn{background:#fef3c7;color:var(--warn)}.pill.info{background:var(--soft);color:var(--accent)}
+.pill i{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:#eef0f4;color:#374151;white-space:nowrap}
+.st-NEW,.st-{background:#f1f5f9;color:#475569}.st-SCHEDULED{background:#e0f2fe;color:#0369a1}.st-SENDING{background:#fef9c3;color:#a16207}.st-SENT{background:#dbeafe;color:#1e40af}.st-COMPLETED{background:#e2e8f0;color:#334155}
+.st-REPLIED{background:#ede9fe;color:#6d28d9}.st-INTERESTED{background:#dcfce7;color:#15803d}.st-NOT_INTERESTED,.st-UNSUBSCRIBED{background:#fee2e2;color:#b91c1c}.st-BOUNCED,.st-INVALID,.st-ERROR{background:#fee2e2;color:#991b1b}.st-PAUSE,.st-SKIP,.st-MANUAL{background:#fef3c7;color:#92400e}
+.sn-POSITIVE{background:#dcfce7;color:#15803d}.sn-NEGATIVE{background:#fee2e2;color:#b91c1c}.sn-NEUTRAL{background:#e2e8f0;color:#334155}.sn-AUTO_REPLY,.sn-BOUNCE,.sn-{background:#fef3c7;color:#92400e}
+button,.btn{font:inherit;font-size:13px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:7px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .12s;white-space:nowrap}
+button:hover{background:#f8fafc;border-color:#cbd5e1}button:disabled{opacity:.45;cursor:not-allowed}
+.btn-p{background:var(--accent);border-color:var(--accent);color:#fff}.btn-p:hover{background:var(--accent-2)}.btn-d{background:var(--bad);border-color:var(--bad);color:#fff}.btn-d:hover{background:#991b1b}
+.btn-g{background:transparent;border-color:transparent}.btn-g:hover{background:#f1f5f9}.sm{padding:4px 9px;font-size:12px;border-radius:6px}.xs{padding:2px 7px;font-size:11px;border-radius:5px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row.end{justify-content:flex-end}.grow{flex:1}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}.lbl{font-size:11.5px;color:var(--muted);font-weight:600}
+input,select,textarea{font:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);min-width:0}
+input:focus,select:focus,textarea:focus{outline:2px solid #bfdbfe;border-color:var(--accent)}textarea{resize:vertical;min-height:80px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px}
+input[type=checkbox]{width:15px;height:15px;padding:0}.help{font-size:11.5px;color:var(--muted)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{padding:6px 12px;border:1px solid var(--line);border-radius:999px;cursor:pointer;background:#fff;font-size:12.5px;transition:all .12s;user-select:none}.chip:hover{border-color:#94a3b8}.chip.on{background:var(--soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+.switch{position:relative;width:38px;height:22px;display:inline-block;flex:0 0 38px}.switch input{opacity:0;width:0;height:0;position:absolute}.switch span{position:absolute;inset:0;background:#cbd5e1;border-radius:999px;transition:.15s;cursor:pointer}.switch span:before{content:"";position:absolute;width:18px;height:18px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.15s;box-shadow:0 1px 2px rgba(0,0,0,.2)}.switch input:checked+span{background:var(--accent)}.switch input:checked+span:before{transform:translateX(16px)}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px}th{text-align:left;font-weight:600;color:var(--muted);font-size:11.5px;padding:8px 10px;border-bottom:1px solid var(--line);background:#fafbfc;position:sticky;top:0;white-space:nowrap;z-index:1}
+td{padding:8px 10px;border-bottom:1px solid #f0f2f5;vertical-align:top}tr:hover td{background:#fafcff}.num{text-align:right}.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px}
+.tbl-wrap{overflow:auto;max-height:62vh;border:1px solid var(--line);border-radius:10px}
+.bar{height:6px;background:#eef0f4;border-radius:999px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--accent);transition:width .4s}
+.empty{padding:26px;text-align:center;color:var(--muted)}
+.result{margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--soft);color:#1e3a8a;white-space:pre-wrap;font-size:12.5px;border:1px solid #dbeafe}.result.err{background:#fee2e2;color:var(--bad);border-color:#fecaca}
+.snip{color:#374151;font-style:italic;font-size:12px}.muted{color:var(--muted)}.small{font-size:12px}.b{font-weight:600}
+#toasts{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:50}.toast{background:#111827;color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:fade .2s;max-width:420px;white-space:pre-wrap}.toast.ok{background:#14532d}.toast.err{background:#7f1d1d}
+#modal{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;z-index:40;padding:20px}#modal .box{background:#fff;border-radius:14px;width:min(780px,100%);max-height:92vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.35);animation:fade .15s}
+#modal .hd{display:flex;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font-weight:700;font-size:15px}#modal .bd{padding:16px 18px;overflow:auto}#modal .ft{padding:12px 18px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+#busy{position:fixed;inset:0;background:rgba(255,255,255,.55);display:none;align-items:center;justify-content:center;z-index:60}#busy div{background:#fff;padding:14px 20px;border-radius:12px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;font-weight:600}
+.spin{width:16px;height:16px;border:2px solid #cbd5e1;border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.skel{height:14px;background:linear-gradient(90deg,#eef0f4,#f8fafc,#eef0f4);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:6px;margin:6px 0}@keyframes sh{to{background-position:-200% 0}}
+.bulk{position:sticky;bottom:0;background:#0f172a;color:#fff;border-radius:12px;padding:10px 14px;display:none;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px;box-shadow:0 8px 30px rgba(0,0,0,.35)}.bulk button{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff}.bulk button:hover{background:rgba(255,255,255,.16)}
+.menu{position:relative}.menu .dd{position:absolute;right:0;top:100%;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.15);display:none;flex-direction:column;min-width:200px;z-index:8;padding:4px}.menu.open .dd{display:flex}.menu .dd button,.menu .dd a{border:0;border-radius:6px;justify-content:flex-start;padding:7px 10px}
+.log-WARN td{background:#fffbeb}.log-ERROR td{background:#fef2f2}.log-DEBUG td{color:#64748b}
+.pager{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin-top:10px;font-size:12px}
+.day-chk label{display:inline-flex;align-items:center;gap:4px;margin-right:8px;font-size:12px}.varchip{cursor:copy}
+</style>
+</head>
+<body>
+<nav>
+  <div class="brand"><i></i>Mail Engine</div>
+  <button data-page="dashboard" class="on"><span class="ic">▦</span>Dashboard</button>
+  <button data-page="recipients"><span class="ic">☰</span>Recipients</button>
+  <button data-page="schedule"><span class="ic">◷</span>Schedule &amp; send</button>
+  <button data-page="templates"><span class="ic">✎</span>Sequence &amp; templates</button>
+  <button data-page="replies"><span class="ic">✉</span>Replies</button>
+  <button data-page="settings"><span class="ic">⚙</span>Settings</button>
+  <button data-page="logs"><span class="ic">≣</span>Logs</button>
+  <div class="grow"></div>
+  <div class="foot" id="foot">…</div>
+</nav>
+<main>
+  <div class="topbar">
+    <h1 id="title">Dashboard</h1>
+    <span id="state" class="pill"><i></i>…</span>
+    <div class="grow"></div>
+    <button class="sm" onclick="ctl('tick','Running scheduler…')">▶ Run tick</button>
+    <button class="sm" onclick="ctl('replies','Checking replies…')">↻ Check replies</button>
+    <button class="sm" id="pausebtn" onclick="togglePause()">⏸ Pause</button>
+    <button class="sm btn-g" onclick="refresh()">Refresh</button>
+  </div>
+  <div class="content">
+
+  <section class="page on" id="dashboard">
+    <div class="grid g5" id="kpis"><div class="card"><div class="skel"></div><div class="skel" style="width:60%"></div></div><div class="card"><div class="skel"></div></div><div class="card"><div class="skel"></div></div><div class="card"><div class="skel"></div></div><div class="card"><div class="skel"></div></div></div>
+    <div class="grid g3 mt">
+      <div class="card"><h3>Pipeline</h3><canvas id="c-funnel" height="210"></canvas></div>
+      <div class="card" style="grid-column:span 2"><h3>Last 14 days <span class="grow"></span><span class="pill info">sent</span><span class="pill" style="background:#ede9fe;color:#6d28d9">replies</span><span class="pill">scheduled</span></h3><canvas id="c-timeline" height="210"></canvas></div>
+    </div>
+    <div class="grid g3 mt">
+      <div class="card"><h3>By group</h3><canvas id="c-groups" height="200"></canvas></div>
+      <div class="card"><h3>Reply sentiment</h3><canvas id="c-sent" height="200"></canvas><div id="d-nosent" class="empty" style="display:none">No replies yet</div></div>
+      <div class="card"><h3>Sequence reach</h3><canvas id="c-steps" height="160"></canvas><div id="d-seqlist" class="small mt"></div></div>
+    </div>
+    <div class="grid g3 mt">
+      <div class="card"><h3>Scheduler</h3><div id="d-sched"></div></div>
+      <div class="card"><h3>Next first emails</h3><table id="d-next"></table></div>
+      <div class="card"><h3>Next follow-ups</h3><table id="d-nextfu"></table></div>
+    </div>
+    <div class="card mt"><h3>Recent activity <span class="grow"></span><button class="xs btn-g" onclick="go('logs')">All logs →</button></h3><div class="tbl-wrap" style="max-height:300px"><table id="d-log"></table></div></div>
+  </section>
+
+  <section class="page" id="recipients">
+    <div class="card">
+      <div class="row">
+        <input id="r-q" placeholder="Search name, email, company…" style="width:260px" oninput="renderRecipients()">
+        <select id="r-status" onchange="renderRecipients()"><option value="">All statuses</option></select>
+        <select id="r-group" onchange="renderRecipients()"><option value="">All groups</option></select>
+        <span class="muted small" id="r-count"></span>
+        <div class="grow"></div>
+        <button onclick="openImport()">⇪ Import (paste)</button>
+        <button class="btn-p" onclick="openEdit(null)">+ Add recipient</button>
+      </div>
+      <div class="tbl-wrap mt"><table id="r-table"></table></div>
+      <div class="pager"><span id="r-pageinfo"></span><button class="sm" onclick="page(-1)">‹</button><button class="sm" onclick="page(1)">›</button>
+        <select id="r-size" class="sm" onchange="renderRecipients()"><option>50</option><option>100</option><option>250</option><option>500</option></select></div>
+      <div class="bulk" id="bulk">
+        <span class="b" id="bulk-n">0 selected</span>
+        <button class="sm" onclick="bulkSchedule()">◷ Schedule…</button>
+        <button class="sm" onclick="bulk('sendNow','Send NOW to the selected rows, ignoring their Scheduled Date?')">⚡ Send now</button>
+        <button class="sm" onclick="bulk('validate')">✓ Validate</button>
+        <button class="sm" onclick="bulk('pause')">⏸ Pause</button>
+        <button class="sm" onclick="bulk('resume')">▶ Resume</button>
+        <button class="sm" onclick="bulk('retry')">↺ Retry errors</button>
+        <button class="sm" onclick="bulk('unschedule')">✕ Unschedule</button>
+        <button class="sm" onclick="bulk('draftFollowUp','Create a follow-up draft in Gmail for each selected thread? Rows become MANUAL.')">✎ Draft follow-up</button>
+        <button class="sm" onclick="bulkRespond()">↩ Respond…</button>
+        <button class="sm" onclick="bulk('skip')">⊘ Skip</button>
+        <button class="sm" onclick="bulk('suppress','Add to the Unsubscribed list? They will never be emailed again.')">⛔ Suppress</button>
+        <button class="sm" onclick="bulk('delete','Delete the selected rows that were never sent? This cannot be undone.')">🗑 Delete</button>
+        <button class="sm btn-g" onclick="clearSel()">Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="schedule">
+    <div class="grid g2">
+      <div class="card">
+        <h3>1 · Who</h3>
+        <div class="chips" id="s-scope">
+          <div class="chip on" data-v="unscheduled">All unscheduled</div><div class="chip" data-v="group">A group</div><div class="chip" data-v="rows">Selected in Recipients (<span id="s-seln">0</span>)</div><div class="chip" data-v="all">Everything (overwrite)</div>
+        </div>
+        <div class="row mt" id="s-groupwrap" style="display:none"><div class="field"><span class="lbl">Group</span><select id="s-group"></select></div></div>
+        <h3 class="mt">2 · When to start</h3>
+        <div class="chips" id="s-start">
+          <div class="chip on" data-v="now">Now</div><div class="chip" data-v="in_1h">In 1 hour</div><div class="chip" data-v="in_3h">In 3 hours</div><div class="chip" data-v="tomorrow_same">Tomorrow, same time</div><div class="chip" data-v="tomorrow_window">Tomorrow at window start</div><div class="chip" data-v="next_monday">Next Monday</div><div class="chip" data-v="next_week_same">In one week</div><div class="chip" data-v="custom">Custom…</div>
+        </div>
+        <div class="row mt" id="s-customwrap" hidden><div class="field"><span class="lbl">Custom start · timezone <span id="s-tz"></span></span><input type="datetime-local" id="s-custom"></div></div>
+      </div>
+      <div class="card">
+        <h3>3 · Spacing &amp; batches</h3>
+        <div class="grid g2">
+          <div class="field"><span class="lbl">Gap between emails (min)</span><input type="number" id="s-gap" min="1"></div>
+          <div class="field"><span class="lbl">Max per day</span><input type="number" id="s-cap" min="0"></div>
+          <div class="field"><span class="lbl">Emails per batch (0 = none)</span><input type="number" id="s-batch" min="0"></div>
+          <div class="field"><span class="lbl">Pause between batches (min)</span><input type="number" id="s-pause" min="0"></div>
+        </div>
+        <div class="row mt"><label class="switch"><input type="checkbox" id="s-window" checked><span></span></label><span>Only inside the send window (skips nights &amp; off days)</span></div>
+        <div class="row"><label class="switch"><input type="checkbox" id="s-overwrite"><span></span></label><span>Overwrite existing Scheduled Dates</span></div>
+        <div class="row mt end"><button onclick="schedule(true)">Preview</button><button class="btn-p" onclick="schedule(false)">Apply schedule</button></div>
+        <div id="s-result"></div>
+      </div>
+    </div>
+    <div class="card mt">
+      <h3>Send immediately <span class="muted" style="text-transform:none;font-weight:400">— ignores Scheduled Date · still validated, suppressed and rate-capped · overflow is queued for the next tick</span></h3>
+      <div class="row">
+        <div class="chips" id="f-scope"><div class="chip" data-v="rows">Selected in Recipients</div><div class="chip" data-v="group">A group</div><div class="chip on" data-v="unscheduled">All unscheduled</div><div class="chip" data-v="all">Everything pending</div></div>
+        <div class="field" id="f-groupwrap" style="display:none"><select id="f-group"></select></div>
+        <div class="grow"></div>
+        <span class="row small"><label class="switch"><input type="checkbox" id="f-window" checked><span></span></label>Ignore send window</span>
+        <span class="row small"><label class="switch"><input type="checkbox" id="f-fu" checked><span></span></label>Include due follow-ups</span>
+        <button class="btn-d" onclick="forceSend()">⚡ Send now</button>
+      </div>
+      <div id="f-result"></div>
+    </div>
+  </section>
+
+  <section class="page" id="templates">
+    <div class="card">
+      <h3>Follow-up sequence <span class="muted" style="text-transform:none;font-weight:400">— each step is a Gmail Draft matched by exact subject · delay counts from the previous send · stops on any reply</span></h3>
+      <table id="t-seq"></table>
+      <div class="row mt"><button class="sm" onclick="addStep()">+ Add step</button><div class="grow"></div><button class="btn-p sm" onclick="saveSeq()">Save sequence</button></div>
+    </div>
+    <div class="card mt">
+      <h3>Reply templates <span class="muted" style="text-transform:none;font-weight:400">— used from Replies (draft or send into the thread) · optional auto-response for INTERESTED in Settings</span></h3>
+      <table id="t-resp"></table>
+      <div class="row mt"><button class="sm" onclick="addResp()">+ Add template</button><div class="grow"></div><button class="btn-p sm" onclick="saveResp()">Save templates</button></div>
+    </div>
+    <div class="card mt"><h3>Variables <span class="muted" style="text-transform:none;font-weight:400">— click to copy · {{Key|fallback}} for optional values</span></h3><div class="chips" id="t-vars"></div><div class="help mt" id="t-api"></div></div>
+  </section>
+
+  <section class="page" id="replies">
+    <div class="card">
+      <h3>Replies <span class="grow"></span><div class="chips" id="rp-filter"><div class="chip on" data-v="">All</div><div class="chip" data-v="POSITIVE">Positive</div><div class="chip" data-v="NEUTRAL">Neutral</div><div class="chip" data-v="NEGATIVE">Negative</div><div class="chip" data-v="AUTO_REPLY">Auto-reply</div><div class="chip" data-v="BOUNCE">Bounced</div></div></h3>
+      <div id="rp-list"></div>
+    </div>
+    <div class="card mt"><h3>Waiting for a reply <span class="muted" style="text-transform:none;font-weight:400">— sequence runs automatically · take over any thread by drafting the next step yourself</span></h3><div class="tbl-wrap" style="max-height:50vh"><table id="rp-await"></table></div></div>
+  </section>
+
+  <section class="page" id="settings">
+    <div class="row"><span class="help" id="cfg-tz"></span><div class="grow"></div><button class="btn-p" onclick="saveConfig()">Save changes <span id="cfg-dirty" class="pill" style="display:none">0</span></button></div>
+    <div class="grid g2 mt" id="cfg-groups"></div>
+    <div class="card mt"><h3>Custom variables <span class="muted" style="text-transform:none;font-weight:400">— any key here becomes {{Key}} in your drafts</span></h3><table id="cfg-custom"></table><div class="row mt"><button class="sm" onclick="addCustomVar()">+ Add variable</button></div></div>
+    <div class="card mt"><h3>Operations</h3>
+      <div class="row">
+        <button onclick="ctl('install','Installing trigger…')">⏱ Install trigger</button><button onclick="ctl('remove')">Remove trigger</button><button onclick="ctl('setup')">Repair sheets</button><button onclick="deployTest()">🧪 Deployment test</button><button onclick="ctl('webapp')">🔗 Full-screen URL</button>
+        <div class="grow"></div><button class="btn-d" onclick="emergency()">🛑 Emergency stop</button>
+      </div>
+      <div id="ops-result"></div>
+    </div>
+  </section>
+
+  <section class="page" id="logs">
+    <div class="card">
+      <div class="row">
+        <select id="l-level" onchange="loadLogs()"><option value="">All levels</option><option>DEBUG</option><option>INFO</option><option>WARN</option><option>ERROR</option></select>
+        <input id="l-q" placeholder="Search event, details, recipient, row…" style="width:300px" onkeydown="if(event.key==='Enter')loadLogs()">
+        <select id="l-limit" onchange="loadLogs()"><option>200</option><option selected>500</option><option>1000</option><option>3000</option></select>
+        <span class="row small"><label class="switch"><input type="checkbox" id="l-auto" onchange="autoLogs()"><span></span></label>Auto-refresh 15 s</span>
+        <span class="muted small" id="l-info"></span><div class="grow"></div>
+        <button class="sm" onclick="loadLogs()">Refresh</button><button class="sm btn-g" onclick="clearLogs()">Clear logs</button>
+      </div>
+      <div class="tbl-wrap mt" style="max-height:72vh"><table id="l-table"></table></div>
+    </div>
+  </section>
+
+  </div>
+</main>
+
+<div id="toasts"></div>
+<div id="modal"><div class="box"><div class="hd"><span id="m-title"></span><div class="grow"></div><button class="btn-g sm" onclick="closeModal()">✕</button></div><div class="bd" id="m-body"></div><div class="ft" id="m-foot"></div></div></div>
+<div id="busy"><div><span class="spin"></span><span id="busy-txt">Working…</span></div></div>
+
+<script>
+(function () {
+  var b64 = '__APP_JS_B64__', serverLen = __APP_JS_LEN__, code = '';
+  function show(msg) { var pre = document.createElement('pre'); pre.style.cssText = 'padding:20px;color:#b91c1c;white-space:pre-wrap;font:12px/1.5 monospace'; pre.textContent = msg; document.body.appendChild(pre); }
+  try {
+    var raw = atob(b64);
+    code = new TextDecoder().decode(Uint8Array.from(raw, function (c) { return c.charCodeAt(0); }));
+  } catch (e) { show('Mail Engine: could not decode the app code: ' + e.message); return; }
+  try {
+    (0, eval)(code + '\n//# sourceURL=panel-app.js');
+  } catch (e) {
+    var report = ['Mail Engine failed to start: ' + (e && e.message ? e.message : e), 'decoded ' + code.length + ' chars, server sent ' + serverLen + (code.length === serverLen ? ' (transport OK)' : ' (MISMATCH)')];
+    if (e instanceof SyntaxError) {
+      var parts = code.split(/\n(?=\/\* )/), offset = 0;
+      for (var i = 0; i < parts.length; i++) {
+        try { new Function(parts[i]); }
+        catch (err) { report.push('Section ' + (i + 1) + ' starting at line ' + code.slice(0, offset).split('\n').length + ': ' + err.message + '  |  ' + parts[i].split('\n')[0].slice(0, 90)); }
+        offset += parts[i].length + 1;
+      }
+      report.push('Copy this whole message back into the chat to get a fix.');
+    }
+    show(report.join('\n')); console.error(e);
+  }
+})();
+</script>
+</body>
+</html>
